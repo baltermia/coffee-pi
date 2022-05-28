@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeePi.Core", "CoffeePi.Core\CoffeePi.Core.csproj", "{26AAE0BB-825C-4551-B39F-69F373B3FE23}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CoffeePi.Shared", "CoffeePi.Shared\CoffeePi.Shared.shproj", "{2F3390AA-3676-43F9-8CB3-E3B4A27B1F63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeePi.Android", "CoffeePi.Android\CoffeePi.Android.csproj", "{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		CoffeePi.Shared\CoffeePi.Shared.projitems*{2f3390aa-3676-43f9-8cb3-e3b4a27b1f63}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{26AAE0BB-825C-4551-B39F-69F373B3FE23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26AAE0BB-825C-4551-B39F-69F373B3FE23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26AAE0BB-825C-4551-B39F-69F373B3FE23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26AAE0BB-825C-4551-B39F-69F373B3FE23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29DD09A2-48E0-46E2-B281-16640B8F9D02}
+	EndGlobalSection
+EndGlobal
