@@ -3,7 +3,7 @@
 /// <summary>
 /// Interface to interact with GPIO I/O
 /// </summary>
-public interface IGpioService
+public interface IGpioService : IDisposable
 {
     /// <summary>
     /// Toggles the State of the given pin

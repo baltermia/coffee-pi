@@ -5,13 +5,18 @@ namespace CoffeePi.Core.Services;
 /// <summary>
 /// Basic implementation of <see cref="IGpioService"/> for the raspberry pi
 /// </summary>
-public class GpioService : IGpioService // TODO: Test implementation on raspberry pi
+public sealed class GpioService : IGpioService // TODO: Test implementation on raspberry pi
 {
     private readonly GpioController controller;
 
     public GpioService()
     {
         controller = new();
+
+        foreach (CoffeeButtonPins pin in Enum.GetValues<CoffeeButtonPins>())
+        {
+            controller.OpenPin((int)pin, PinMode.Output);
+        }
     }
 
     public void Toggle(CoffeeButtonPins pin)
@@ -33,4 +38,15 @@ public class GpioService : IGpioService // TODO: Test implementation on raspberr
 
     public void Disable(CoffeeButtonPins pin) =>
         controller.Write((int)pin, PinValue.Low);
+
+
+    public void Dispose()
+    {
+        foreach (CoffeeButtonPins pin in Enum.GetValues<CoffeeButtonPins>())
+        {
+            controller.ClosePin((int)pin);
+        }
+
+        controller.Dispose();
+    }
 }
