@@ -12,13 +12,13 @@
 
 
 @code {
-    private CoffeeDto Coffee = new();
+    private Coffee Coffee = new();
 
     async private void CoffeeNow()
     {
         Coffee.RepeatValue = 0;
         Coffee.Time = DateTime.Now;
 
-        await Http.PutAsJsonAsync<CoffeeDto>("/coffee", Coffee);
+        await Http.PutAsJsonAsync<Coffee>("/coffee", Coffee);
     }
 }

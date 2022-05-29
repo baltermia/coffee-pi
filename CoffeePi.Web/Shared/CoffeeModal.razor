@@ -30,7 +30,7 @@
     MudForm form;
     bool success;
     string[] errors = { };
-    private CoffeeDto? Coffee = new();
+    private Coffee? Coffee = new();
     [CascadingParameter] 
     MudDialogInstance MudDialog { get; set; }
 
@@ -38,7 +38,7 @@
     {
         try
         {
-            await Http.PostAsJsonAsync<CoffeeDto>("/Coffee/", Coffee);
+            await Http.PostAsJsonAsync<Coffee>("/Coffee/", Coffee);
         }
 
         catch (HttpRequestException e)
