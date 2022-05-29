@@ -1,8 +1,8 @@
-﻿using CoffeePi.Database.Models;
+﻿using CoffeePi.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace CoffeePi.Database.Configuration;
+namespace CoffeePi.Data.Configuration;
 
 public class CoffeePiContext : DbContext
 {

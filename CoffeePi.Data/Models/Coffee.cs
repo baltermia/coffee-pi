@@ -1,7 +1,7 @@
 ﻿using CoffeePi.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace CoffeePi.Database.Models;
+namespace CoffeePi.Data.Models;
 
 public class Coffee
 {

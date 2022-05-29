@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CoffeePi.Database.Migrations
+namespace CoffeePi.Data.Migrations
 {
     public partial class InitialMigration : Migration
     {

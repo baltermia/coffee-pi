@@ -1,5 +1,5 @@
 using CoffeePi.Core.Services;
-using CoffeePi.Database.Configuration;
+using CoffeePi.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
