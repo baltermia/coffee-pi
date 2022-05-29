@@ -1,11 +1,13 @@
-﻿namespace CoffeePi.Shared.DataTransferObjects;
+﻿using CoffeePi.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
+
+namespace CoffeePi.Shared.Models;
 
 public class Coffee
 {
     public int Id { get; init; }
     public DateTime TimeExecuted { get; set; }
     [Required]
-    public string CoffeeType { get; set; }
+    public CoffeeButton Type { get; set; }
     public int? PlannedRoutineId { get; set; }
 }

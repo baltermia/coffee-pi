@@ -11,7 +11,7 @@ public class PlannedRoutine
     public int Id { get; init; }
 
     [Required]
-    public CoffeeButton Button { get; set; }
+    public CoffeeButton Type { get; set; }
 
     [Required]
     public DateTime Time { get; set; }

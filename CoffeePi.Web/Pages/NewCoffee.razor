@@ -14,7 +14,7 @@
 
 
 @code {
-    private Coffee Coffee = new();
+    private CoffeeDto Coffee = new();
 
     async private void CreateCoffee()
     {
@@ -22,6 +22,6 @@
         var options = new DialogOptions { CloseOnEscapeKey = true };
         var Dialog = DialogService.Show<CoffeeModal>("Neuer Kaffee", parameters, options);
 
-        await Http.PutAsJsonAsync<Coffee>("/coffee", Coffee);
+        await Http.PutAsJsonAsync<CoffeeDto>("/coffee", Coffee);
     }
 }
