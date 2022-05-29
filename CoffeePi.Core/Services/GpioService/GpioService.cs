@@ -5,8 +5,9 @@ namespace CoffeePi.Core.Services;
 /// <summary>
 /// Basic implementation of <see cref="IGpioService"/> for the raspberry pi
 /// </summary>
-public sealed class GpioService : IGpioService // TODO: Test implementation on raspberry pi
+public class GpioService : IGpioService // TODO: Test implementation on raspberry pi
 {
+    private bool disposed = false;
     private readonly GpioController controller;
 
     public GpioService()
@@ -15,7 +16,7 @@ public sealed class GpioService : IGpioService // TODO: Test implementation on r
 
         foreach (CoffeeButtonPins pin in Enum.GetValues<CoffeeButtonPins>())
         {
-            controller.OpenPin((int)pin, PinMode.Output);
+            controller.OpenPin((int)pin, PinMode.Output, PinValue.Low);
         }
     }
 
@@ -39,14 +40,25 @@ public sealed class GpioService : IGpioService // TODO: Test implementation on r
     public void Disable(CoffeeButtonPins pin) =>
         controller.Write((int)pin, PinValue.Low);
 
-
     public void Dispose()
     {
-        foreach (CoffeeButtonPins pin in Enum.GetValues<CoffeeButtonPins>())
+        Dispose(true);
+
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool isDisposing)
+    {
+        if (disposed)
         {
-            controller.ClosePin((int)pin);
+            return;
         }
 
-        controller.Dispose();
+        if (isDisposing)
+        {
+            controller.Dispose();
+        }
+
+        disposed = true;
     }
 }
