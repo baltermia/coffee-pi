@@ -1,7 +1,7 @@
 ﻿using CoffeePi.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace CoffeePi.Shared.Models;
+namespace CoffeePi.Database.Models;
 
 /// <summary>
 /// Model representing a planned routine for a button press
