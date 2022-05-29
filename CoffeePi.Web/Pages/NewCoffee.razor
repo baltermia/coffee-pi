@@ -1,23 +1,26 @@
-﻿@using MudBlazor
+﻿@inject HttpClient Http
+@inject ISnackbar Snackbar
+@inject NavigationManager NavManager
+@inject IDialogService DialogService
 
-@inject HttpClient Http
 
-@page "/New Coffee"
+@page "/NewCoffee"
 
 <PageTitle>Counter</PageTitle>
 
 <h1>New Coffee</h1>
 
-<MudButton Variant="Variant.Filled" @onclick="CoffeeNow"> Make Coffe Now </MudButton>
+<MudButton Variant="Variant.Filled" @onclick="CreateCoffee"> Make Coffe Now </MudButton>
 
 
 @code {
     private CoffeeDto Coffee = new();
 
-    async private void CoffeeNow()
+    async private void CreateCoffee()
     {
-        Coffee.RepeatValue = 0;
-        Coffee.Time = DateTime.Now;
+        var parameters = new DialogParameters();
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var Dialog = DialogService.Show<CoffeeModal>("Neuer Kaffee", parameters, options);
 
         await Http.PutAsJsonAsync<CoffeeDto>("/coffee", Coffee);
     }

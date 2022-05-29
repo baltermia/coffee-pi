@@ -10,7 +10,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/") });
 //if (builder.HostEnvironment.IsDevelopment())
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://dummyapi.io/data/v1/") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7256") });
 
 builder.Services.AddMudServices();
 

@@ -1,0 +1,60 @@
+﻿@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using CoffeePi.Shared.DataTransferObjects
+@inject ISnackbar Snackbar
+@inject HttpClient Http
+
+
+<MudDialog>
+    <DialogContent>
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+
+                <MudSelect T="string" Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="@Coffee.CoffeeType">
+                <MudSelectItem Value="@("SmallCup")">Kleiner Kaffee</MudSelectItem>
+                <MudSelectItem Value="@("BigCup")">Grosser Kaffee</MudSelectItem>
+                <MudSelectItem Value="@("Espresso")">Espresso</MudSelectItem>
+                <MudSelectItem Value="@("HotWater")">Heisses Wasser für Tee</MudSelectItem>
+            </MudSelect>
+
+            </MudForm>   
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Abbrechen</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Speichern</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code{
+
+    MudForm form;
+    bool success;
+    string[] errors = { };
+    private CoffeeDto? Coffee = new();
+    [CascadingParameter] 
+    MudDialogInstance MudDialog { get; set; }
+
+    async Task Submit()
+    {
+        try
+        {
+            await Http.PostAsJsonAsync<CoffeeDto>("/Coffee/", Coffee);
+        }
+
+        catch (HttpRequestException e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+        }
+
+       MudDialog.Close(DialogResult.Ok(true));
+    }
+
+
+
+
+
+    void Cancel() => MudDialog.Cancel();
+
+
+}
+
