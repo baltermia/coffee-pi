@@ -12,6 +12,4 @@
     <PackageReference Include="MudBlazor" Version="6.0.10" />
   </ItemGroup>
 
-  <Import Project="..\CoffeePi.Shared\CoffeePi.Shared.projitems" Label="Shared" />
-
 </Project>
