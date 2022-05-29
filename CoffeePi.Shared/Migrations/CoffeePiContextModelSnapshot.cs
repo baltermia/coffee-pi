@@ -33,7 +33,7 @@ namespace CoffeePi.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PlannedRoutines");
+                    b.ToTable("PlannedRoutines", (string)null);
                 });
 #pragma warning restore 612, 618
         }
