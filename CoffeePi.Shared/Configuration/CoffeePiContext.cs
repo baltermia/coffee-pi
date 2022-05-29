@@ -8,7 +8,6 @@ public class CoffeePiContext : DbContext
 {
     public DbSet<PlannedRoutine> PlannedRoutines { get; set; }
 
-    public CoffeePiContext() : base() { }
     public CoffeePiContext(DbContextOptions<CoffeePiContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
