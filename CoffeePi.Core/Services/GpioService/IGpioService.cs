@@ -1,4 +1,6 @@
-﻿namespace CoffeePi.Core.Services;
+﻿using CoffeePi.Shared.Enums;
+
+namespace CoffeePi.Core.Services;
 
 /// <summary>
 /// Interface to interact with GPIO I/O
@@ -8,15 +10,15 @@ public interface IGpioService : IDisposable
     /// <summary>
     /// Toggles the State of the given pin
     /// </summary>
-    public void Toggle(CoffeeButtonPins pin);
+    public void Toggle(CoffeeButton pin);
 
     /// <summary>
     /// Sets the State of the given pin to <see cref="PinValue.High"/>
     /// </summary>
-    public void Enable(CoffeeButtonPins pin);
+    public void Enable(CoffeeButton pin);
 
     /// <summary>
     /// Sets the State of the given pin to <see cref="PinValue.Low"/>
     /// </summary>
-    public void Disable(CoffeeButtonPins pin);
+    public void Disable(CoffeeButton pin);
 }

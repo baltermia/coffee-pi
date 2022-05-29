@@ -1,4 +1,5 @@
 ﻿using System.Device.Gpio;
+using CoffeePi.Shared.Enums;
 
 namespace CoffeePi.Core.Services;
 
@@ -14,13 +15,13 @@ public class GpioService : IGpioService // TODO: Test implementation on raspberr
     {
         controller = new();
 
-        foreach (CoffeeButtonPins pin in Enum.GetValues<CoffeeButtonPins>())
+        foreach (CoffeeButton pin in Enum.GetValues<CoffeeButton>())
         {
             controller.OpenPin((int)pin, PinMode.Output, PinValue.Low);
         }
     }
 
-    public void Toggle(CoffeeButtonPins pin)
+    public void Toggle(CoffeeButton pin)
     {
         int pinNum = (int)pin;
 
@@ -34,10 +35,10 @@ public class GpioService : IGpioService // TODO: Test implementation on raspberr
         controller.Write(pinNum, newValue);
     }
 
-    public void Enable(CoffeeButtonPins pin) =>
+    public void Enable(CoffeeButton pin) =>
         controller.Write((int)pin, PinValue.High);
 
-    public void Disable(CoffeeButtonPins pin) =>
+    public void Disable(CoffeeButton pin) =>
         controller.Write((int)pin, PinValue.Low);
 
     public void Dispose()
