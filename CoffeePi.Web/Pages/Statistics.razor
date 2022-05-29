@@ -1,0 +1,24 @@
+﻿@using MudBlazor
+
+@inject HttpClient Http
+
+@page "/New Coffee"
+
+<PageTitle>Counter</PageTitle>
+
+<h1>New Coffee</h1>
+
+<MudButton Variant="Variant.Filled" @onclick="CoffeeNow"> Make Coffe Now </MudButton>
+
+
+@code {
+    private CoffeeDto Coffee = new();
+
+    async private void CoffeeNow()
+    {
+        Coffee.RepeatValue = 0;
+        Coffee.Time = DateTime.Now;
+
+        await Http.PutAsJsonAsync<CoffeeDto>("/coffee", Coffee);
+    }
+}

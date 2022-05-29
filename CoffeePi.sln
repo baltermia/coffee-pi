@@ -9,9 +9,12 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CoffeePi.Shared", "CoffeePi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeePi.Android", "CoffeePi.Android\CoffeePi.Android.csproj", "{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeePi.Web", "CoffeePi.Web\CoffeePi.Web.csproj", "{F1A63022-A55A-4546-8832-F98D7D6881A2}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		CoffeePi.Shared\CoffeePi.Shared.projitems*{2f3390aa-3676-43f9-8cb3-e3b4a27b1f63}*SharedItemsImports = 13
+		CoffeePi.Shared\CoffeePi.Shared.projitems*{f1a63022-a55a-4546-8832-f98d7d6881a2}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +31,10 @@ Global
 		{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B13BD4D6-4B6F-48DF-BB61-3A3DCCEC0C20}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F1A63022-A55A-4546-8832-F98D7D6881A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1A63022-A55A-4546-8832-F98D7D6881A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1A63022-A55A-4546-8832-F98D7D6881A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1A63022-A55A-4546-8832-F98D7D6881A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
