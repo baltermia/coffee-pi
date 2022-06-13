@@ -4,24 +4,95 @@
 @inject IDialogService DialogService
 
 
-@page "/NewCoffee"
+@page "/"
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>New Routine</PageTitle>
 
 <h1>New Coffee</h1>
 
-<MudButton Variant="Variant.Filled" @onclick="CreateCoffee"> Make Coffe Now </MudButton>
+<MudButton Variant="Variant.Filled" @onclick="NewRoutine"> New Routine </MudButton>
+
+
+<MudTable Items="@dailyRoutines" Loading="@_loading" >
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Daily Routines</MudText>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>Coffee Type</MudTh>
+        <MudTh>Executes Every</MudTh>
+        <MudTh>On</MudTh>
+        <MudTh>Delete Routine</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Id</MudTd>
+        <MudTd>@context.ButtonType</MudTd>
+        <MudTd>@context.DaysOfWeek</MudTd>
+        <MudTd>@context.TimeOfDay</MudTd>
+        <MudTd><MudButton @onclick="@(() => DeleteDaily(context.Id))">Delete</MudButton></MudTd>
+    </RowTemplate>
+</MudTable>
+
+<MudTable Items="@weeklyRoutines" Loading="@_loading" >
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Weekly Routines</MudText>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>Coffee Type</MudTh>
+        <MudTh>Executes Every</MudTh>
+        <MudTh>On</MudTh>
+        <MudTh>Delete Routine</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Id</MudTd>
+        <MudTd>@context.ButtonType</MudTd>
+        <MudTd>@context.DayOfWeek</MudTd>
+        <MudTd>@context.TimeOfDay</MudTd>
+        <MudTd><MudButton @onclick="@(() => DeleteWeekly(context.Id))">Delete</MudButton></MudTd>
+    </RowTemplate>
+</MudTable>
 
 
 @code {
-    private CoffeeDto Coffee = new();
 
-    async private void CreateCoffee()
+    private IEnumerable<DailyRoutineDto> dailyRoutines = new List<DailyRoutineDto>();
+    private IEnumerable<WeeklyRoutineDto> weeklyRoutines = new List<WeeklyRoutineDto>();
+    private bool _loading;
+
+    async private void NewRoutine()
     {
         var parameters = new DialogParameters();
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-        var Dialog = DialogService.Show<CoffeeModal>("Neuer Kaffee", parameters, options);
+        var options = new MudBlazor.DialogOptions { CloseOnEscapeKey = true };
+        var Dialog = DialogService.Show<CoffeeTypeModal>("Neuer Kaffee", parameters, options);
+    }
 
-        await Http.PutAsJsonAsync<CoffeeDto>("/coffee", Coffee);
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        try
+        {
+            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/daily/");
+            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/weekly/");
+
+            _loading = false;
+            StateHasChanged();
+        }
+        catch (HttpRequestException e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+            _loading = false;
+        }
+
+    }
+
+    async void DeleteDaily(int id)
+    {
+        await Http.DeleteAsync($"/daily/{id}");
+    }
+    async void DeleteWeekly(int id)
+    {
+        await Http.DeleteAsync($"/weekly/{id}");
     }
 }

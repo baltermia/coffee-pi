@@ -2,20 +2,15 @@
 
 @inject HttpClient Http
 
-@page "/No"
+@page "/Stats"
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Statistics</PageTitle>
 
 <h1>New Coffee</h1>
 
-<MudButton Variant="Variant.Filled" @onclick="CoffeeNow"> Make Coffe Now </MudButton>
+@*ToDo: Add Stats for every Coffee made*@
 
 
 @code {
-    private CoffeeDto Coffee = new();
 
-    async private void CoffeeNow()
-    {
-        await Http.PutAsJsonAsync<CoffeeDto>("/coffee", Coffee);
-    }
 }

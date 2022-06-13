@@ -4,23 +4,23 @@
 
 @inject ISnackbar Snackbar
 @inject HttpClient Http
+@inject IDialogService DialogService
 
 <MudDialog>
     <DialogContent>
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
 
-                <MudSelect T=CoffeeButton Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="@Coffee.Type">
+            <MudSelect T=CoffeeButton Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="CoffeeType" Placeholder="Coffee">
                 <MudSelectItem Value=CoffeeButton.SmallCup>Kleiner Kaffee</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.BigCup>Grosser Kaffee</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.Espresso>Espresso</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.HotWater>Heisses Wasser für Tee</MudSelectItem>
             </MudSelect>
-
             </MudForm>   
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Abbrechen</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Speichern</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Weiter</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -30,22 +30,16 @@
     MudForm form;
     bool success;
     string[] errors = { };
-    private CoffeeDto Coffee = new();
+    private CoffeeButton CoffeeType = new();
     [CascadingParameter] 
     MudDialogInstance MudDialog { get; set; }
 
     async Task Submit()
     {
-        try
-        {
-            await Http.PostAsJsonAsync<CoffeeDto>("/Coffee/", Coffee);
-        }
-
-        catch (HttpRequestException e)
-        {
-            Snackbar.Add(e.Message, Severity.Warning);
-        }
-
+        var parameters = new DialogParameters();
+        var options = new MudBlazor.DialogOptions { CloseOnEscapeKey = true };
+        parameters.Add("CoffeeType", CoffeeType);
+        var Dialog = DialogService.Show<CoffeeTimeModal>("zeit", parameters, options);
        MudDialog.Close(DialogResult.Ok(true));
     }
 

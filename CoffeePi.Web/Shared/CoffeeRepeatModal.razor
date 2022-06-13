@@ -1,0 +1,91 @@
+﻿@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using CoffeePi.Shared.DataTransferObjects
+
+
+@inject ISnackbar Snackbar
+@inject HttpClient Http
+@inject IDialogService DialogService
+
+<MudDialog>
+    <DialogContent>
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+            <MudSelect T=string Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="RoutineType">
+                @*ToDo: Add Repetition for Multiple Days of Week*@
+                <MudSelectItem Value="@("Once")">Keine Wiederholung</MudSelectItem>
+                <MudSelectItem Value="@("Daily")">Täglich</MudSelectItem>
+                <MudSelectItem Value="@("Weekly")">Wöchentlich</MudSelectItem>
+            </MudSelect>
+
+            </MudForm>   
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Abbrechen</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Speichern</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code{
+
+    MudForm form;
+    bool success;
+    string[] errors = { };
+
+    private string? RoutineType;
+
+    [CascadingParameter] 
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public CoffeeButton CoffeeType { get; set; }
+
+    [Parameter]
+    public DateTime Time { get; set; }
+
+
+    async Task Submit()
+    {
+        try
+        {
+            switch (RoutineType) //ToDo: Fix DateTime to TimeOnly Conversion
+            {
+                case "Once":
+                    SingleRoutineDto SingleCoffee = new();
+                    SingleCoffee.ButtonType = CoffeeType;
+                    SingleCoffee.Time = Time;
+                    await Http.PostAsJsonAsync<SingleRoutineDto>("/Single/", SingleCoffee);
+                    break;
+
+                case "Daily":
+                    DailyRoutineDto DailyCoffee = new();
+                    DailyCoffee.ButtonType = CoffeeType;
+                    DailyCoffee.TimeOfDay = TimeOnly.FromDateTime(Time);
+                    await Http.PostAsJsonAsync<DailyRoutineDto>("/Daily/", DailyCoffee);
+                    break;
+
+                case "Weekly":
+                    WeeklyRoutineDto WeeklyCoffee = new();
+                    WeeklyCoffee.ButtonType = CoffeeType;
+                    WeeklyCoffee.TimeOfDay = TimeOnly.FromDateTime(Time) ;
+                    WeeklyCoffee.DayOfWeek = Time.DayOfWeek;
+                    await Http.PostAsJsonAsync<WeeklyRoutineDto>("/Weekly/", WeeklyCoffee);
+                    break;
+            }
+        }
+        catch (HttpRequestException e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+        }
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+
+
+
+    void Cancel() => MudDialog.Cancel();
+
+
+}
+
