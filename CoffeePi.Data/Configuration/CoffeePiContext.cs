@@ -19,11 +19,9 @@ public class CoffeePiContext : DbContext
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
 
-        string discriminator = "Discriminator";
-
         modelBuilder
             .Entity<CoffeeRoutine>()
-            .HasDiscriminator<string>(discriminator)
+            .HasDiscriminator<string>("Discriminator")
             .HasValue<SingleRoutine>(nameof(SingleRoutine))
             .HasValue<DailyRoutine>(nameof(DailyRoutine))
             .HasValue<WeeklyRoutine>(nameof(WeeklyRoutine));
