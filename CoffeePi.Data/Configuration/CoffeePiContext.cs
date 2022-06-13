@@ -18,5 +18,25 @@ public class CoffeePiContext : DbContext
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
+
+        string discriminator = "Discriminator";
+
+        modelBuilder
+            .Entity<CoffeeRoutine>()
+            .HasDiscriminator<string>(discriminator)
+            .HasValue<SingleRoutine>(nameof(SingleRoutine))
+            .HasValue<DailyRoutine>(nameof(DailyRoutine))
+            .HasValue<WeeklyRoutine>(nameof(WeeklyRoutine));
+
+        modelBuilder
+            .Entity<DailyRoutine>()
+            .Property(e => e.DaysOfWeek)
+            .HasConversion(
+                e => string.Join(',', e.Select(x => x.ToString("D")).ToArray()),
+                e => e.Split(new[] { ',' })
+                .Select(x => Enum.Parse<DayOfWeek>(x))
+                .Cast<DayOfWeek>()
+                .ToList()
+            );
     }
 }
