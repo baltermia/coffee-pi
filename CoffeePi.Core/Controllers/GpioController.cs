@@ -20,7 +20,7 @@ namespace CoffeePi.Core.Controllers
         {
             try
             {
-                _gpioService.SimulatePress(button);
+                _gpioService.SimulatePressAsync(button);
 
                 return NoContent();
             }
