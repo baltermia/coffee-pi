@@ -14,6 +14,11 @@ builder.Services.AddScoped<IDailyRoutineRepository, DailyRoutineRepository>();
 builder.Services.AddScoped<IWeeklyRoutineRepository, WeeklyRoutineRepository>();
 builder.Services.AddScoped<IExecutedRoutineRepository, ExecutedRoutineRepository>();
 
+// Routine Services
+builder.Services.AddScoped<IRoutineService, RoutineService>();
+builder.Services.AddSingleton<IPeriodicHostedService, PeriodicHostedService>();
+builder.Services.AddHostedService(provider => provider.GetRequiredService<IPeriodicHostedService>());
+
 // Add services to the container.
 
 builder.Services.AddControllers();
