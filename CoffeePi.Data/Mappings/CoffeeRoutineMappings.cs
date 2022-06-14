@@ -11,12 +11,12 @@ public static class CoffeeRoutineMappings
     /// <summary>
     /// Exception stating the a mapping method to convert a given model to a dto could not be found.
     /// </summary>
-    public static readonly ArgumentException DtoMappingNotFound = new ($"CoffeeRoutine is not of any known type. Please add type to switch statement: {nameof(CoffeeRoutineMappings.ToDto)}");
+    public static readonly ArgumentException DtoMappingNotFound = new($"CoffeeRoutine is not of any known type. Please add type to switch statement: {nameof(CoffeeRoutineMappings.ToDto)}");
 
     /// <summary>
     /// Exception stating the a mapping method to convert a given dto to a model could not be found.
     /// </summary>
-    public static readonly ArgumentException ModelMappingNotFound = new ($"CoffeeRoutineDto is not of any known type. Please add type to switch statement: {nameof(CoffeeRoutineMappings.ToModel)}");
+    public static readonly ArgumentException ModelMappingNotFound = new($"CoffeeRoutineDto is not of any known type. Please add type to switch statement: {nameof(CoffeeRoutineMappings.ToModel)}");
 
     #region ToDto
     public static CoffeeRoutineDto ToDto(this CoffeeRoutine routine) => routine switch
@@ -56,7 +56,7 @@ public static class CoffeeRoutineMappings
             new DailyRoutineDto
             {
                 Id = routine.Id,
-                ButtonType = routine.ButtonType, 
+                ButtonType = routine.ButtonType,
                 DaysOfWeek = routine.DaysOfWeek,
                 TimeOfDay = routine.TimeOfDay,
                 ExecutionIds = routine.Executions.Select(e => e.Id).ToList()

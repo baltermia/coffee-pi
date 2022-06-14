@@ -1,6 +1,4 @@
-﻿using CoffeePi.Core.Services;
-
-namespace CoffeePi.Core.Services;
+﻿namespace CoffeePi.Core.Services;
 
 public class PeriodicHostedService : BackgroundService, IPeriodicHostedService
 {
@@ -34,7 +32,7 @@ public class PeriodicHostedService : BackgroundService, IPeriodicHostedService
                 IRoutineService routineService = asyncScope.ServiceProvider.GetRequiredService<IRoutineService>();
 
                 await routineService.DoRoutineWorkAsync(token);
-            } 
+            }
             catch { } // TODO: Add exception logging (perhaps?)
         }
     }

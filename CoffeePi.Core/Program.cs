@@ -30,7 +30,7 @@ builder.Services.AddSwaggerGen();
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<CoffeePiContext>(options =>
     options.UseMySql(
-        connectionString, 
+        connectionString,
         ServerVersion.AutoDetect(connectionString)
     )
 );

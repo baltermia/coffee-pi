@@ -1,10 +1,10 @@
 ﻿using Android.App;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
-using Android.Content.PM;
 using Google.Android.Material.BottomNavigation;
 
 namespace CoffeePi.Android

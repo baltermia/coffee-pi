@@ -4,7 +4,7 @@ public class RoutineService : IRoutineService
 {
     public async Task DoRoutineWorkAsync(CancellationToken token)
     {
-         // TODO: Remove test code
+        // TODO: Remove test code
 
         await Task.CompletedTask;
 

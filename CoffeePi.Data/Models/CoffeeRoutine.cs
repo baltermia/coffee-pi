@@ -12,7 +12,7 @@ public abstract class CoffeeRoutine
     public CoffeeButton ButtonType { get; set; }
 
     [DefaultValue(true)]
-    public bool Enabled { get; set;  } = true;
+    public bool Enabled { get; set; } = true;
 }
 
 public class WeeklyRoutine : CoffeeRoutine

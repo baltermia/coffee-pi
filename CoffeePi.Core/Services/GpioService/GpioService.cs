@@ -1,5 +1,5 @@
-﻿using System.Device.Gpio;
-using CoffeePi.Shared.Enums;
+﻿using CoffeePi.Shared.Enums;
+using System.Device.Gpio;
 
 namespace CoffeePi.Core.Services;
 

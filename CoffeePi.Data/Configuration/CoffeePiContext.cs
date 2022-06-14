@@ -6,7 +6,7 @@ namespace CoffeePi.Data.Configuration;
 
 public class CoffeePiContext : DbContext
 {
-    public DbSet<CoffeeRoutine> CoffeeRoutines{ get; set; }
+    public DbSet<CoffeeRoutine> CoffeeRoutines { get; set; }
     public DbSet<ExecutedRoutine> ExecutedRoutines { get; set; }
 
     public CoffeePiContext(DbContextOptions<CoffeePiContext> options) : base(options) { }
