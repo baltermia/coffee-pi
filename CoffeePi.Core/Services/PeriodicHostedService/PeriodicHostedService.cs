@@ -22,13 +22,13 @@ public class PeriodicHostedService : BackgroundService, IPeriodicHostedService
 
         while (!token.IsCancellationRequested && await timer.WaitForNextTickAsync(token))
         {
+            if (!Enabled)
+            {
+                continue;
+            }
+
             try
             {
-                if (!Enabled)
-                {
-                    continue;
-                }
-
                 await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
 
                 IRoutineService routineService = asyncScope.ServiceProvider.GetRequiredService<IRoutineService>();
