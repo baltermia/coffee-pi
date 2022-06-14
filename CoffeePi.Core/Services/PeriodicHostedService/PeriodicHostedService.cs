@@ -34,7 +34,8 @@ public class PeriodicHostedService : BackgroundService, IPeriodicHostedService
                 IRoutineService routineService = asyncScope.ServiceProvider.GetRequiredService<IRoutineService>();
 
                 await routineService.DoRoutineWorkAsync(token);
-            } catch { } // TODO: Add exception logging (perhaps?)
+            } 
+            catch { } // TODO: Add exception logging (perhaps?)
         }
     }
 }
