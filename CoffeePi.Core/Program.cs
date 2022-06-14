@@ -9,6 +9,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IGpioService, GpioService>();
 
 // Repositories
+builder.Services.AddScoped<ICoffeeRoutineRepository, CoffeeRoutineRepository>();
 builder.Services.AddScoped<ISingleRoutineRepository, SingleRoutineRepository>();
 builder.Services.AddScoped<IDailyRoutineRepository, DailyRoutineRepository>();
 builder.Services.AddScoped<IWeeklyRoutineRepository, WeeklyRoutineRepository>();
