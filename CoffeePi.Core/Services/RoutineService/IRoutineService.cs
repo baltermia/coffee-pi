@@ -2,5 +2,5 @@
 
 public interface IRoutineService
 {
-    public Task DoRoutineWorkAsync(CancellationToken token);
+    public Task CheckAllRoutinesAsync(CancellationToken token = default);
 }
