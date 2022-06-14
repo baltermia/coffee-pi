@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoffeePi.Core.Controllers
 {
+    [Route("api")]
+    [ApiController]
     public class ExecutedController : Controller
     {
         private readonly IExecutedRoutineRepository _repo;
