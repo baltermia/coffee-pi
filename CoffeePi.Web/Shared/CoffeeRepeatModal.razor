@@ -54,14 +54,18 @@
                     SingleRoutineDto SingleCoffee = new();
                     SingleCoffee.ButtonType = CoffeeType;
                     SingleCoffee.Time = Time;
-                    await Http.PostAsJsonAsync<SingleRoutineDto>("/Single/", SingleCoffee);
+                    SingleCoffee.Enabled = true;
+                    SingleCoffee.Id = 1;
+                    SingleCoffee.ExecutionId = 1;
+                    await Http.PostAsJsonAsync<SingleRoutineDto>("/api/routine", SingleCoffee);
                     break;
 
                 case "Daily":
                     DailyRoutineDto DailyCoffee = new();
                     DailyCoffee.ButtonType = CoffeeType;
                     DailyCoffee.TimeOfDay = TimeOnly.FromDateTime(Time);
-                    await Http.PostAsJsonAsync<DailyRoutineDto>("/Daily/", DailyCoffee);
+                    DailyCoffee.Enabled = true;
+                    await Http.PostAsJsonAsync<DailyRoutineDto>("/api/routine", DailyCoffee);
                     break;
 
                 case "Weekly":
@@ -69,7 +73,8 @@
                     WeeklyCoffee.ButtonType = CoffeeType;
                     WeeklyCoffee.TimeOfDay = TimeOnly.FromDateTime(Time) ;
                     WeeklyCoffee.DayOfWeek = Time.DayOfWeek;
-                    await Http.PostAsJsonAsync<WeeklyRoutineDto>("/Weekly/", WeeklyCoffee);
+                    WeeklyCoffee.Enabled = true;
+                    await Http.PostAsJsonAsync<WeeklyRoutineDto>("/api/routine", WeeklyCoffee);
                     break;
             }
         }

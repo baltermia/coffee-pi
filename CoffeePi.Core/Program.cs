@@ -35,6 +35,13 @@ builder.Services.AddDbContext<CoffeePiContext>(options =>
         ServerVersion.AutoDetect(connectionString)
     )
 );
+//Fix CORS
+builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
+{
+    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+    builder.AllowAnyHeader();
+    builder.AllowAnyMethod();
+}));
 
 WebApplication app = builder.Build();
 
@@ -55,8 +62,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
+
+app.UseCors();
+
+
 
 app.UseAuthorization();
 
