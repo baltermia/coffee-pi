@@ -4,55 +4,54 @@ using CoffeePi.Data.Models;
 using CoffeePi.Shared.DataTransferObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoffeePi.Core.Repositories
+namespace CoffeePi.Core.Repositories;
+
+public interface IExecutedRoutineRepository : IRepositoryBase<ExecutedRoutineDto> { }
+
+public class ExecutedRoutineRepository : IExecutedRoutineRepository
 {
-    public interface IExecutedRoutineRepository : IRepositoryBase<ExecutedRoutineDto> { }
+    private readonly CoffeePiContext _context;
 
-    public class ExecutedRoutineRepository : IExecutedRoutineRepository
+    public ExecutedRoutineRepository(CoffeePiContext context)
     {
-        private readonly CoffeePiContext _context;
+        _context = context;
+    }
 
-        public ExecutedRoutineRepository(CoffeePiContext context)
-        {
-            _context = context;
-        }
+    public IEnumerable<ExecutedRoutineDto> FindAll() =>
+        _context
+            .Set<ExecutedRoutine>()
+            .AsNoTracking()
+            .Select(ExecutedRoutineMappings.ToDto);
 
-        public IEnumerable<ExecutedRoutineDto> FindAll() =>
+    public ExecutedRoutineDto FindById(int id) =>
+        _context
+            .Set<ExecutedRoutine>()
+            .AsNoTracking()
+            .SingleOrDefault(e => e.Id == id)
+            .ToDto();
+
+    public async Task<ExecutedRoutineDto> CreateAsync(ExecutedRoutineDto dto)
+    {
+        ExecutedRoutine routine = dto.ToModel();
+
+        await _context.AddAsync(routine);
+
+        await _context.SaveChangesAsync();
+
+        return routine.ToDto();
+    }
+
+    public async Task UpdateAsync(ExecutedRoutineDto dto)
+    {
+        ExecutedRoutine routine =
             _context
                 .Set<ExecutedRoutine>()
-                .AsNoTracking()
-                .Select(ExecutedRoutineMappings.ToDto);
+                .Single(e => e.Id == dto.Id);
 
-        public ExecutedRoutineDto FindById(int id) =>
-            _context
-                .Set<ExecutedRoutine>()
-                .AsNoTracking()
-                .SingleOrDefault(e => e.Id == id)
-                .ToDto();
+        routine = dto.ToModel(routine);
 
-        public async Task<ExecutedRoutineDto> CreateAsync(ExecutedRoutineDto dto)
-        {
-            ExecutedRoutine routine = dto.ToModel();
+        _context.Update(routine);
 
-            await _context.AddAsync(routine);
-
-            await _context.SaveChangesAsync();
-
-            return routine.ToDto();
-        }
-
-        public async Task UpdateAsync(ExecutedRoutineDto dto)
-        {
-            ExecutedRoutine routine =
-                _context
-                    .Set<ExecutedRoutine>()
-                    .Single(e => e.Id == dto.Id);
-
-            routine = dto.ToModel(routine);
-
-            _context.Update(routine);
-
-            await _context.SaveChangesAsync();
-        }
+        await _context.SaveChangesAsync();
     }
 }

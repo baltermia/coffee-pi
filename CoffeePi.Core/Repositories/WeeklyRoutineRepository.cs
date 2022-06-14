@@ -4,58 +4,57 @@ using CoffeePi.Data.Models;
 using CoffeePi.Shared.DataTransferObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoffeePi.Core.Repositories
+namespace CoffeePi.Core.Repositories;
+
+public interface IWeeklyRoutineRepository : IRepositoryBase<WeeklyRoutineDto> { }
+
+public class WeeklyRoutineRepository : IWeeklyRoutineRepository
 {
-    public interface IWeeklyRoutineRepository : IRepositoryBase<WeeklyRoutineDto> { }
+    private readonly CoffeePiContext _context;
 
-    public class WeeklyRoutineRepository : IWeeklyRoutineRepository
+    public WeeklyRoutineRepository(CoffeePiContext context)
     {
-        private readonly CoffeePiContext _context;
+        _context = context;
+    }
 
-        public WeeklyRoutineRepository(CoffeePiContext context)
-        {
-            _context = context;
-        }
+    public IEnumerable<WeeklyRoutineDto> FindAll() =>
+        _context
+            .Set<CoffeeRoutine>()
+            .OfType<WeeklyRoutine>()
+            .AsNoTracking()
+            .Select(CoffeeRoutineMappings.ToDto);
 
-        public IEnumerable<WeeklyRoutineDto> FindAll() =>
+    public WeeklyRoutineDto FindById(int id) =>
+        _context
+            .Set<CoffeeRoutine>()
+            .OfType<WeeklyRoutine>()
+            .AsNoTracking()
+            .SingleOrDefault(e => e.Id == id)
+            .ToDto();
+
+    public async Task<WeeklyRoutineDto> CreateAsync(WeeklyRoutineDto dto)
+    {
+        WeeklyRoutine routine = dto.ToModel();
+
+        await _context.AddAsync<CoffeeRoutine>(routine);
+
+        await _context.SaveChangesAsync();
+
+        return routine.ToDto();
+    }
+
+    public async Task UpdateAsync(WeeklyRoutineDto dto)
+    {
+        WeeklyRoutine routine =
             _context
                 .Set<CoffeeRoutine>()
                 .OfType<WeeklyRoutine>()
-                .AsNoTracking()
-                .Select(CoffeeRoutineMappings.ToDto);
+                .Single(e => e.Id == dto.Id);
 
-        public WeeklyRoutineDto FindById(int id) =>
-            _context
-                .Set<CoffeeRoutine>()
-                .OfType<WeeklyRoutine>()
-                .AsNoTracking()
-                .SingleOrDefault(e => e.Id == id)
-                .ToDto();
+        routine = dto.ToModel(routine);
 
-        public async Task<WeeklyRoutineDto> CreateAsync(WeeklyRoutineDto dto)
-        {
-            WeeklyRoutine routine = dto.ToModel();
+        _context.Update<CoffeeRoutine>(routine);
 
-            await _context.AddAsync<CoffeeRoutine>(routine);
-
-            await _context.SaveChangesAsync();
-
-            return routine.ToDto();
-        }
-
-        public async Task UpdateAsync(WeeklyRoutineDto dto)
-        {
-            WeeklyRoutine routine =
-                _context
-                    .Set<CoffeeRoutine>()
-                    .OfType<WeeklyRoutine>()
-                    .Single(e => e.Id == dto.Id);
-
-            routine = dto.ToModel(routine);
-
-            _context.Update<CoffeeRoutine>(routine);
-
-            await _context.SaveChangesAsync();
-        }
+        await _context.SaveChangesAsync();
     }
 }
