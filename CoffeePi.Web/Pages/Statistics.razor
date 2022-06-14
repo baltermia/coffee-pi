@@ -7,7 +7,7 @@
 
 <PageTitle>Statistics</PageTitle>
 
-<h1>New Coffee</h1>
+<h1>Stats</h1>
 
 <div>
     <MudChart ChartType="ChartType.Bar" ChartSeries="@Series"  @bind-SelectedIndex="Index" Width="100%" Height="500px" XAxisLabels="@XAxisLabels"></MudChart>
@@ -89,12 +89,12 @@
 
     }
 
-    public List<ChartSeries> Series = new List<ChartSeries>()
+    public List<ChartSeries>? Series = new List<ChartSeries>()
     {
-        new ChartSeries() { Name = "Espresso", Data = { } },
-        new ChartSeries() { Name = "Small Cup", Data = { } },
-        new ChartSeries() { Name = "Big Cup", Data = { } },
-        new ChartSeries() { Name = "Hot Water", Data = { } },
+        new ChartSeries() { Name = "Espresso", Data = new double[]{} },
+        new ChartSeries() { Name = "Small Cup", Data = new double[]{} },
+        new ChartSeries() { Name = "Big Cup", Data = new double[]{} },
+        new ChartSeries() { Name = "Hot Water", Data = new double[]{} },
     };
     public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 }
