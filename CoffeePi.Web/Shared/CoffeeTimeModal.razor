@@ -9,8 +9,8 @@
 <MudDialog>
     <DialogContent>
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-                <MudButton OnClick="Submit">Jetzt</MudButton>
                 <RadzenDatePicker TValue="DateTime?" ShowTime="true" HoursStep="1.5" MinutesStep="5" @bind-Value=@Time/>
+                <MudButton OnClick="TimeNow">Jetzt</MudButton>
 
             </MudForm>   
     </DialogContent>
@@ -35,6 +35,14 @@
     [CascadingParameter] 
     MudDialogInstance MudDialog { get; set; }
 
+
+    async void TimeNow()
+    {
+        //evtl. Todo: Add a few Seconds to Dateime Now
+        Time = DateTime.Now;
+        await Submit();
+    }
+
     async Task Submit()
     {
         var parameters = new DialogParameters();
@@ -42,6 +50,7 @@
         parameters.Add("Time", Time);
         parameters.Add("CoffeeType", CoffeeType);
         var Dialog = DialogService.Show<CoffeeRepeatModal>("Wiederholung", parameters, options);
+        var result = await Dialog.Result;
        MudDialog.Close(DialogResult.Ok(true));
     }
 

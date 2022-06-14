@@ -1,5 +1,6 @@
 ﻿@using MudBlazor
 
+@inject ISnackbar Snackbar
 @inject HttpClient Http
 
 @page "/Stats"
@@ -8,9 +9,90 @@
 
 <h1>New Coffee</h1>
 
+<div>
+    <MudChart ChartType="ChartType.Bar" ChartSeries="@Series"  @bind-SelectedIndex="Index" Width="100%" Height="500px" XAxisLabels="@XAxisLabels"></MudChart>
+</div>
+
 @*ToDo: Add Stats for every Coffee made*@
 
 
 @code {
 
+    private int Index = -1;
+    private IEnumerable<ExecutedRoutineDto> coffees = new List<ExecutedRoutineDto>();
+    private IEnumerable<DailyRoutineDto> dailyRoutines = new List<DailyRoutineDto>();
+    private IEnumerable<WeeklyRoutineDto> weeklyRoutines = new List<WeeklyRoutineDto>();
+    private IEnumerable<SingleRoutineDto> singleRoutines = new List<SingleRoutineDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            coffees = await Http.GetFromJsonAsync<List<ExecutedRoutineDto>>("/executed/");
+            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/daily/");
+            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/weekly/");
+            singleRoutines = await Http.GetFromJsonAsync<List<SingleRoutineDto>>("/single/");
+            StateHasChanged();
+        }
+        catch (HttpRequestException e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+        }
+
+    }
+
+    private List<int> GetAllRoutineIds()
+    {
+        List<int> ids = new();
+        foreach (var dailyRoutine in dailyRoutines)
+        {
+            ids.Add(dailyRoutine.Id);
+        }
+        foreach (var weeklyRoutine in weeklyRoutines)
+        {
+            ids.Add(weeklyRoutine.Id);
+        }
+        foreach (var singleRoutine in singleRoutines)
+        {
+            ids.Add(singleRoutine.Id);
+        }
+        return ids;
+    }
+
+    private int GetCoffeesOfTypePerMonth(CoffeeButton coffeeType, int i)
+    {
+        //ToDo: Simplify with  Dtos
+        string month = System.Globalization.DateTimeFormatInfo.InvariantInfo.GetAbbreviatedMonthName(i);
+        int coffeesinmonth = 0;
+        foreach (var coffee in coffees)
+        {
+            if ((coffee.Time.ToString("MMM") == month) && (GetAllRoutineIds().Contains(coffee.RoutineId)))
+            {
+                coffeesinmonth++;
+            }
+        }
+        return coffeesinmonth;
+    }
+
+    private void  SetChartData()
+    {
+
+        for (int i = 1; i < 13; i++)
+        {
+            Series[0].Data[i] = GetCoffeesOfTypePerMonth(CoffeeButton.Espresso, i);
+            Series[0].Data[i] = GetCoffeesOfTypePerMonth(CoffeeButton.SmallCup, i);
+            Series[0].Data[i] = GetCoffeesOfTypePerMonth(CoffeeButton.BigCup, i);
+            Series[0].Data[i] = GetCoffeesOfTypePerMonth(CoffeeButton.HotWater, i);
+        }
+
+    }
+
+    public List<ChartSeries> Series = new List<ChartSeries>()
+    {
+        new ChartSeries() { Name = "Espresso", Data = { } },
+        new ChartSeries() { Name = "Small Cup", Data = { } },
+        new ChartSeries() { Name = "Big Cup", Data = { } },
+        new ChartSeries() { Name = "Hot Water", Data = { } },
+    };
+    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 }

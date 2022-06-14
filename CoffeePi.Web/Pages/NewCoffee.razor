@@ -65,6 +65,8 @@
         var parameters = new DialogParameters();
         var options = new MudBlazor.DialogOptions { CloseOnEscapeKey = true };
         var Dialog = DialogService.Show<CoffeeTypeModal>("Neuer Kaffee", parameters, options);
+
+        var result = await Dialog.Result;
     }
 
 
