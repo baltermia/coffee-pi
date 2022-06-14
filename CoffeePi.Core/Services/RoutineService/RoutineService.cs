@@ -2,8 +2,12 @@
 
 public class RoutineService : IRoutineService
 {
-    public Task DoRoutineWorkAsync(CancellationToken token)
+    public async Task DoRoutineWorkAsync(CancellationToken token)
     {
-        throw new NotImplementedException();
+         // TODO: Remove test code
+
+        await Task.CompletedTask;
+
+        Console.WriteLine("Running...");
     }
 }
