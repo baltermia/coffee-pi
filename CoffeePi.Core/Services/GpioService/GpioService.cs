@@ -41,11 +41,11 @@ public class GpioService : IGpioService // TODO: Test implementation on raspberr
     public void Disable(CoffeeButton pin) =>
         controller.Write((int)pin, PinValue.Low);
 
-    public async Task SimulatePressAsync(CoffeeButton pin, int delay = 300)
+    public async Task SimulatePressAsync(CoffeeButton pin, int delay = 300, CancellationToken token = default)
     {
         Enable(pin);
 
-        await Task.Delay(delay);
+        await Task.Delay(delay, token);
 
         Disable(pin);
     }
