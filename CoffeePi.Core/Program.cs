@@ -1,8 +1,18 @@
+using CoffeePi.Core.Repositories;
 using CoffeePi.Core.Services;
 using CoffeePi.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+// Custom Services
+builder.Services.AddScoped<IGpioService, GpioService>();
+
+// Repositories
+builder.Services.AddScoped<ISingleRoutineRepository, SingleRoutineRepository>();
+builder.Services.AddScoped<IDailyRoutineRepository, DailyRoutineRepository>();
+builder.Services.AddScoped<IWeeklyRoutineRepository, WeeklyRoutineRepository>();
+builder.Services.AddScoped<IExecutedRoutineRepository, ExecutedRoutineRepository>();
 
 // Add services to the container.
 
@@ -19,9 +29,6 @@ builder.Services.AddDbContext<CoffeePiContext>(options =>
         ServerVersion.AutoDetect(connectionString)
     )
 );
-
-// Custom Services
-builder.Services.AddScoped<IGpioService, GpioService>();
 
 WebApplication app = builder.Build();
 

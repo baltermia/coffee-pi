@@ -2,10 +2,12 @@
 
 namespace CoffeePi.Shared.DataTransferObjects;
 
-public abstract class CoffeeRoutineDto
+public abstract class CoffeeRoutineDto : IDataTransferObject
 {
     public int Id { get; set; }
     public CoffeeButton ButtonType { get; set; }
+
+    public bool Enabled { get; set; }
 }
 
 public class WeeklyRoutineDto : CoffeeRoutineDto

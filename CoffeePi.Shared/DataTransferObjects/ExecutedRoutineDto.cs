@@ -1,6 +1,6 @@
 ﻿namespace CoffeePi.Shared.DataTransferObjects;
 
-public class ExecutedRoutineDto
+public class ExecutedRoutineDto : IDataTransferObject
 {
     public int Id { get; set; }
     public int RoutineId { get; set; }
