@@ -31,14 +31,10 @@ public class PeriodicHostedService : BackgroundService, IPeriodicHostedService
 
                 await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
 
-                IRoutineService sampleService = asyncScope.ServiceProvider.GetRequiredService<IRoutineService>();
+                IRoutineService routineService = asyncScope.ServiceProvider.GetRequiredService<IRoutineService>();
 
-                await sampleService.DoRoutineWorkAsync(token);
-            }
-            catch
-            {
-
-            }
+                await routineService.DoRoutineWorkAsync(token);
+            } catch { } // TODO: Add exception logging (perhaps?)
         }
     }
 }
