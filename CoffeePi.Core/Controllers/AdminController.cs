@@ -29,7 +29,7 @@ namespace CoffeePi.Core.Controllers
             }
         }
 
-        [HttpPatch("background")]
+        [HttpPatch("background/{state}")]
         public ActionResult PatchBackgroundState(bool state)
         {
             try
