@@ -19,19 +19,21 @@
 @code {
 
     private int Index = -1;
-    private IEnumerable<ExecutedRoutineDto> coffees = new List<ExecutedRoutineDto>();
-    private IEnumerable<DailyRoutineDto> dailyRoutines = new List<DailyRoutineDto>();
-    private IEnumerable<WeeklyRoutineDto> weeklyRoutines = new List<WeeklyRoutineDto>();
-    private IEnumerable<SingleRoutineDto> singleRoutines = new List<SingleRoutineDto>();
+    private IEnumerable<ExecutedRoutineDto>? coffees = new List<ExecutedRoutineDto>();
+    private IEnumerable<DailyRoutineDto>? dailyRoutines = new List<DailyRoutineDto>();
+    private IEnumerable<WeeklyRoutineDto>? weeklyRoutines = new List<WeeklyRoutineDto>();
+    private IEnumerable<SingleRoutineDto>? singleRoutines = new List<SingleRoutineDto>();
+    private IEnumerable<CoffeeRoutineDto>? allRoutines = new List<CoffeeRoutineDto>();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            coffees = await Http.GetFromJsonAsync<List<ExecutedRoutineDto>>("/executed/");
-            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/daily/");
-            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/weekly/");
-            singleRoutines = await Http.GetFromJsonAsync<List<SingleRoutineDto>>("/single/");
+            coffees = await Http.GetFromJsonAsync<List<ExecutedRoutineDto>>("/api/executed/");
+            allRoutines = await Http.GetFromJsonAsync<List<CoffeeRoutineDto>>("/api/routine");
+            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/api/routine/");
+            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/api/routine/");
+            singleRoutines = await Http.GetFromJsonAsync<List<SingleRoutineDto>>("/api/routine/");
             StateHasChanged();
         }
         catch (HttpRequestException e)

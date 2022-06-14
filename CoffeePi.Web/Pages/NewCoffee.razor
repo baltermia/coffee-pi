@@ -55,9 +55,8 @@
 
 
 @code {
-
-    private IEnumerable<DailyRoutineDto> dailyRoutines = new List<DailyRoutineDto>();
-    private IEnumerable<WeeklyRoutineDto> weeklyRoutines = new List<WeeklyRoutineDto>();
+    private IEnumerable<DailyRoutineDto>? dailyRoutines = new List<DailyRoutineDto>();
+    private IEnumerable<WeeklyRoutineDto>? weeklyRoutines = new List<WeeklyRoutineDto>();
     private bool _loading;
 
     async private void NewRoutine()
@@ -75,8 +74,8 @@
         _loading = true;
         try
         {
-            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/daily/");
-            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/weekly/");
+            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/api/routine");
+            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/api/routine");
 
             _loading = false;
             StateHasChanged();
@@ -91,10 +90,10 @@
 
     async void DeleteDaily(int id)
     {
-        await Http.DeleteAsync($"/daily/{id}");
+        await Http.DeleteAsync($"/{id}");
     }
     async void DeleteWeekly(int id)
     {
-        await Http.DeleteAsync($"/weekly/{id}");
+        await Http.DeleteAsync($"/{id}");
     }
 }
