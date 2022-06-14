@@ -69,7 +69,7 @@ public static class CoffeeRoutineMappings
         SingleRoutineDto single => single.ToModel(routine as SingleRoutine),
         WeeklyRoutineDto weekly => weekly.ToModel(routine as WeeklyRoutine),
         DailyRoutineDto daily => daily.ToModel(routine as DailyRoutine),
-        _ => throw 
+        _ => throw ModelMappingNotFound
     };
 
     public static SingleRoutine ToModel(this SingleRoutineDto dto, SingleRoutine routine = null)
