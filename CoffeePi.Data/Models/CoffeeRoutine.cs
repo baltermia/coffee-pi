@@ -1,4 +1,5 @@
 ﻿using CoffeePi.Shared.Enums;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoffeePi.Data.Models;
@@ -9,6 +10,9 @@ public abstract class CoffeeRoutine
 
     [Required]
     public CoffeeButton ButtonType { get; set; }
+
+    [DefaultValue(true)]
+    public bool Enabled { get; set;  } = true;
 }
 
 public class WeeklyRoutine : CoffeeRoutine
