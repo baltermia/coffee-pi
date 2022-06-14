@@ -23,23 +23,33 @@ public class RoutineService : IRoutineService
 
         foreach (CoffeeRoutine routine in openRoutines)
         {
-            if (!routine.ShouldRoutineBeExecuted())
-            {
-                continue;
-            }
-
-            await _gpio.SimulatePressAsync(routine.ButtonType, token: token);
-
-            ExecutedRoutine execution = new();
-
-            execution.Routine = routine;
-            execution.Success = true;
-            execution.Time = DateTime.Now;
-
-            await _context.AddAsync(execution, token);
+            await ExecuteRoutineAsync(routine, false, token);
         }
 
         await _context.SaveChangesAsync(token);
+    }
+
+    public async Task ExecuteRoutineAsync(CoffeeRoutine routine, bool saveDbChanges = true, CancellationToken token = default)
+    {
+        if (!routine.ShouldRoutineBeExecuted())
+        {
+            return;
+        }
+
+        await _gpio.SimulatePressAsync(routine.ButtonType, token: token);
+
+        ExecutedRoutine execution = new ();
+
+        execution.Routine = routine;
+        execution.Success = true;
+        execution.Time = DateTime.Now;
+
+        await _context.AddAsync(execution, token);
+
+        if (saveDbChanges)
+        {
+            await _context.SaveChangesAsync(token);
+        }
     }
 }
 
