@@ -8,13 +8,23 @@ namespace CoffeePi.Data.Mappings;
 /// </summary>
 public static class CoffeeRoutineMappings
 {
+    /// <summary>
+    /// Exception stating the a mapping method to convert a given model to a dto could not be found.
+    /// </summary>
+    public static readonly ArgumentException DtoMappingNotFound = new ($"CoffeeRoutine is not of any known type. Please add type to switch statement: {nameof(CoffeeRoutineMappings.ToDto)}");
+
+    /// <summary>
+    /// Exception stating the a mapping method to convert a given dto to a model could not be found.
+    /// </summary>
+    public static readonly ArgumentException ModelMappingNotFound = new ($"CoffeeRoutineDto is not of any known type. Please add type to switch statement: {nameof(CoffeeRoutineMappings.ToModel)}");
+
     #region ToDto
     public static CoffeeRoutineDto ToDto(this CoffeeRoutine routine) => routine switch
     {
         SingleRoutine single => single.ToDto(),
         WeeklyRoutine weekly => weekly.ToDto(),
         DailyRoutine daily => daily.ToDto(),
-        _ => throw new ArgumentException($"CoffeeRoutine is not of any known type. Please add type to switch statement: {nameof(CoffeeRoutineMappings.ToDto)}")
+        _ => throw DtoMappingNotFound
     };
 
     public static SingleRoutineDto ToDto(this SingleRoutine routine) =>
@@ -59,7 +69,7 @@ public static class CoffeeRoutineMappings
         SingleRoutineDto single => single.ToModel(routine as SingleRoutine),
         WeeklyRoutineDto weekly => weekly.ToModel(routine as WeeklyRoutine),
         DailyRoutineDto daily => daily.ToModel(routine as DailyRoutine),
-        _ => throw new ArgumentException($"CoffeeRoutineDto is not of any known type. Please add type to switch statement: {nameof(CoffeeRoutineMappings.ToModel)}")
+        _ => throw 
     };
 
     public static SingleRoutine ToModel(this SingleRoutineDto dto, SingleRoutine routine = null)
