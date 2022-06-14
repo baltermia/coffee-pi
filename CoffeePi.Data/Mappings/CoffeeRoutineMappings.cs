@@ -56,7 +56,7 @@ public static class CoffeeRoutineMappings
             new DailyRoutineDto
             {
                 Id = routine.Id,
-                ButtonType = routine.ButtonType,
+                ButtonType = routine.ButtonType, 
                 DaysOfWeek = routine.DaysOfWeek,
                 TimeOfDay = routine.TimeOfDay,
                 ExecutionIds = routine.Executions.Select(e => e.Id).ToList()
