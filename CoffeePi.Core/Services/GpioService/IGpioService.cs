@@ -26,5 +26,5 @@ public interface IGpioService : IDisposable
     /// Enables the given pin for some (real-) time to simulate a button press
     /// </summary>
     /// <param name="delay">The delay between the ON/OFF state of the IO pin in milliseconds</param>
-    public Task SimulatePress(CoffeeButton pin, int delay = 300);
+    public Task SimulatePressAsync(CoffeeButton pin, int delay = 300, CancellationToken token = default);
 }
