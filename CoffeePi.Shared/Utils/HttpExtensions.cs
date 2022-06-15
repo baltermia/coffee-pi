@@ -32,7 +32,7 @@ public static class HttpExtensions
         return result;
     }
 
-    public static async Task<T> DeserializeResponse<T>(this HttpResponseMessage response)
+    public static async Task<T> DeserializeResponseAsync<T>(this HttpResponseMessage response)
     {
         string json = await response.Content.ReadAsStringAsync();
 
