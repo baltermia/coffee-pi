@@ -35,7 +35,7 @@ public static class CoffeeRoutineMappings
                 Id = routine.Id,
                 ButtonType = routine.ButtonType,
                 Time = routine.Time,
-                ExecutionId = routine.Execution.Id
+                ExecutionId = routine.Execution?.Id ?? default
             };
 
     public static WeeklyRoutineDto ToDto(this WeeklyRoutine routine) =>
