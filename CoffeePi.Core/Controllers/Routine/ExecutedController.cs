@@ -84,4 +84,19 @@ public class ExecutedController : Controller
             return StatusCode(StatusCodes.Status500InternalServerError, "Error updating the entity in the database");
         }
     }
+
+    [HttpGet("fromRoutine/{id}")]
+    public ActionResult<IEnumerable<ExecutedRoutineDto>> GetFromRoutine(int id)
+    {
+        try
+        {
+            IEnumerable<ExecutedRoutineDto> routines = _repo.FindFromRoutineId(id);
+
+            return Ok(routines);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Error getting the entity from database");
+        }
+    }
 }
