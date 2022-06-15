@@ -1,5 +1,4 @@
-﻿using CoffeePi.Mobile.Data;
-using Microsoft.AspNetCore.Components.WebView.Maui;
+﻿using MudBlazor.Services;
 
 namespace CoffeePi.Mobile
 {
@@ -7,7 +6,8 @@ namespace CoffeePi.Mobile
     {
         public static MauiApp CreateMauiApp()
         {
-            var builder = MauiApp.CreateBuilder();
+            MauiAppBuilder builder = MauiApp.CreateBuilder();
+
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -17,10 +17,12 @@ namespace CoffeePi.Mobile
 
             builder.Services.AddMauiBlazorWebView();
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
+		    builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
 
-            builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddScoped(sp => new HttpClient());
+
+            builder.Services.AddMudServices();
 
             return builder.Build();
         }
