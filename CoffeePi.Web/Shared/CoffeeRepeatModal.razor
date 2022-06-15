@@ -1,6 +1,7 @@
 ﻿@using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 @using CoffeePi.Shared.DataTransferObjects
+@using CoffeePi.Shared.Utils
 
 
 @inject ISnackbar Snackbar
@@ -55,9 +56,9 @@
                     SingleCoffee.ButtonType = CoffeeType;
                     SingleCoffee.Time = Time;
                     SingleCoffee.Enabled = true;
-                    SingleCoffee.Id = 1;
-                    SingleCoffee.ExecutionId = 1;
-                    await Http.PostAsJsonAsync<SingleRoutineDto>("/api/routine", SingleCoffee);
+                    await Http.PostBasicAsync<SingleRoutineDto>("/api/single", SingleCoffee);
+
+
                     break;
 
                 case "Daily":
@@ -65,7 +66,7 @@
                     DailyCoffee.ButtonType = CoffeeType;
                     DailyCoffee.TimeOfDay = TimeOnly.FromDateTime(Time);
                     DailyCoffee.Enabled = true;
-                    await Http.PostAsJsonAsync<DailyRoutineDto>("/api/routine", DailyCoffee);
+                    await Http.PostBasicAsync<DailyRoutineDto>("/api/daily", DailyCoffee);
                     break;
 
                 case "Weekly":
@@ -74,7 +75,7 @@
                     WeeklyCoffee.TimeOfDay = TimeOnly.FromDateTime(Time) ;
                     WeeklyCoffee.DayOfWeek = Time.DayOfWeek;
                     WeeklyCoffee.Enabled = true;
-                    await Http.PostAsJsonAsync<WeeklyRoutineDto>("/api/routine", WeeklyCoffee);
+                    await Http.PostBasicAsync<WeeklyRoutineDto>("/api/weekly", WeeklyCoffee);
                     break;
             }
         }
