@@ -53,10 +53,30 @@
     </RowTemplate>
 </MudTable>
 
+<MudTable Items="@singleRoutines" Loading="@_loading" >
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Weekly Routines</MudText>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Id</MudTh>
+        <MudTh>Coffee Type</MudTh>
+        <MudTh>Executed on</MudTh>
+        <MudTh>Delete Routine</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Id</MudTd>
+        <MudTd>@context.ButtonType</MudTd>
+        <MudTd>@context.Time</MudTd>
+        <MudTd><MudButton @onclick="@(() => DeleteWeekly(context.Id))">Delete</MudButton></MudTd>
+    </RowTemplate>
+</MudTable>
+
+
 
 @code {
     private IEnumerable<DailyRoutineDto>? dailyRoutines = new List<DailyRoutineDto>();
     private IEnumerable<WeeklyRoutineDto>? weeklyRoutines = new List<WeeklyRoutineDto>();
+    private IEnumerable<SingleRoutineDto>? singleRoutines = new List<SingleRoutineDto>();
     private bool _loading;
 
     async private void NewRoutine()
@@ -74,8 +94,9 @@
         _loading = true;
         try
         {
-            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/api/routine");
-            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/api/routine");
+            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/api/daily");
+            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/api/weekly");
+            singleRoutines = await Http.GetFromJsonAsync<List<SingleRoutineDto>>("/api/single");
 
             _loading = false;
             StateHasChanged();
