@@ -1,3 +1,48 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<MudText Align=Align.Center Typo=Typo.h2>Neue Routine</MudText>
+
+<MudGrid Spacing=4 Justify=Justify.Center>
+    <MudItem>
+        <MudPaper Height="100px" Width="100px">
+            <MudIconButton Title="Big Cup" Icon="fa-solid fa-mug-hot" OnClick=OnBigCupClick />
+        </MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Height="100px" Width="100px">
+            <MudIconButton Title="Small Cup" Icon="fa-solid fa-mug-hot" OnClick=OnSmallCupClick />
+        </MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Height="100px" Width="100px">
+            <MudIconButton Title="Espresso" Icon="fa-solid fa-mug-hot" OnClick=OnEspressoClick />
+        </MudPaper>
+    </MudItem>
+    <MudItem>
+        <MudPaper Height="100px" Width="100px">
+            <MudIconButton Title="Hot Water" Icon="fa-solid fa-droplet-degree" OnClick=OnHotWaterClick />
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private void OnBigCupClick()
+    {
+
+    }
+
+    private void OnSmallCupClick()
+    {
+
+    }
+
+    private void OnEspressoClick()
+    {
+
+    }
+
+    private void OnHotWaterClick()
+    {
+
+    }
+}
