@@ -10,7 +10,7 @@
     <DialogContent>
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
 
-            <MudSelect T=CoffeeButton Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="CoffeeType" Placeholder="Coffee">
+            <MudSelect T=CoffeeButton Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="CoffeeType" Text="Select Coffee Type" >
                 <MudSelectItem Value=CoffeeButton.SmallCup>Kleiner Kaffee</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.BigCup>Grosser Kaffee</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.Espresso>Espresso</MudSelectItem>

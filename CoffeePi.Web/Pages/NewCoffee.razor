@@ -27,7 +27,7 @@
     <RowTemplate>
         <MudTd>@context.Id</MudTd>
         <MudTd>@context.ButtonType</MudTd>
-        <MudTd>@context.DaysOfWeek</MudTd>
+        <MudTd>daily</MudTd> @*ToDo: Change to Display specific Days*@
         <MudTd>@context.TimeOfDay</MudTd>
         <MudTd><MudButton @onclick="@(() => DeleteDaily(context.Id))">Delete</MudButton></MudTd>
     </RowTemplate>
@@ -55,7 +55,7 @@
 
 <MudTable Items="@singleRoutines" Loading="@_loading" >
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Weekly Routines</MudText>
+        <MudText Typo="Typo.h6">Single Routines</MudText>
     </ToolBarContent>
     <HeaderContent>
         <MudTh>Id</MudTh>
@@ -86,6 +86,7 @@
         var Dialog = DialogService.Show<CoffeeTypeModal>("Neuer Kaffee", parameters, options);
 
         var result = await Dialog.Result;
+        await OnInitializedAsync();
     }
 
 
@@ -94,9 +95,9 @@
         _loading = true;
         try
         {
-            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/api/daily");
-            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/api/weekly");
-            singleRoutines = await Http.GetFromJsonAsync<List<SingleRoutineDto>>("/api/single");
+            dailyRoutines = await Http.GetBasicAsync<List<DailyRoutineDto>>("/api/daily");
+            weeklyRoutines = await Http.GetBasicAsync<List<WeeklyRoutineDto>>("/api/weekly");
+            singleRoutines = await Http.GetBasicAsync<List<SingleRoutineDto>>("/api/single");
 
             _loading = false;
             StateHasChanged();
@@ -107,7 +108,6 @@
             _loading = false;
         }
 
-    }
 
     async void DeleteDaily(int id)
     {

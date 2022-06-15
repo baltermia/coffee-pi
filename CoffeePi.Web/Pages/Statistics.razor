@@ -30,10 +30,10 @@
         try
         {
             coffees = await Http.GetFromJsonAsync<List<ExecutedRoutineDto>>("/api/executed/");
-            allRoutines = await Http.GetFromJsonAsync<List<CoffeeRoutineDto>>("/api/routine");
-            dailyRoutines = await Http.GetFromJsonAsync<List<DailyRoutineDto>>("/api/daily/");
-            weeklyRoutines = await Http.GetFromJsonAsync<List<WeeklyRoutineDto>>("/api/weekly/");
-            singleRoutines = await Http.GetFromJsonAsync<List<SingleRoutineDto>>("/api/single/");
+            allRoutines = await HttpExtensions.DeserializeResponseAsync<List<CoffeeRoutineDto>>(await Http.GetAsync("/api/routine"));
+            dailyRoutines = await HttpExtensions.DeserializeResponseAsync<List<DailyRoutineDto>>(await Http.GetAsync("/api/daily"));
+            weeklyRoutines = await HttpExtensions.DeserializeResponseAsync<List<WeeklyRoutineDto>>(await Http.GetAsync("/api/weekly"));
+            singleRoutines = await HttpExtensions.DeserializeResponseAsync<List<SingleRoutineDto>>(await Http.GetAsync("/api/single"));
             StateHasChanged();
         }
         catch (HttpRequestException e)
