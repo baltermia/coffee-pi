@@ -1,0 +1,58 @@
+﻿@page "/Stats"
+
+@inject HttpClient Http
+
+<MudText Align=Align.Center Typo=Typo.h2>Statistics</MudText>
+
+<MudChart ChartType=ChartType.Line ChartSeries=series XAxisLabels=axisLabels />
+
+@code {
+    private List<ChartSeries> series = new();
+    private string[] axisLabels = { };
+
+    protected async override Task OnInitializedAsync()
+    {
+        IEnumerable<DayOfWeek> enums = Enum.GetValues<DayOfWeek>();
+        DayOfWeek today = DateTime.Now.DayOfWeek;
+
+        // skips to the day of today, then concatenates all of the other days
+        IEnumerable<DayOfWeek> sortedEnums = enums.Skip((int)today).Concat(enums.Take((int)today));
+
+        axisLabels = sortedEnums.Select(e => nameof(e)).ToArray();
+
+        // get all routines
+        IEnumerable<SingleRoutineDto> routines = await Http.GetBasicAsync<IEnumerable<SingleRoutineDto>>("api/routine");
+
+        // get all executions for each routine type
+
+        IEnumerable<ExecutedRoutineDto> singleExecutions = 
+            (await Task.WhenAll(
+                routines.OfType<SingleRoutineDto>().Select(
+                    async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"api/executed/from-routine/{e.Id}")
+                )
+            )).SelectMany(e => e);
+
+        IEnumerable<ExecutedRoutineDto> dailyExecutions =
+            (await Task.WhenAll(
+                routines.OfType<DailyRoutineDto>().Select(
+                    async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"api/executed/from-routine/{e.Id}")
+                )
+            )).SelectMany(e => e);
+
+        IEnumerable<ExecutedRoutineDto> weeklyExecutions =
+            (await Task.WhenAll(
+                routines.OfType<WeeklyRoutineDto>().Select(
+                    async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"api/executed/from-routine/{e.Id}")
+                )
+            )).SelectMany(e => e);
+
+        series = new ()
+        { 
+            new () { Name = "Single",   Data = sortedEnums.Select(day => (double)singleExecutions.Count(e => e.Time.DayOfWeek == day)).ToArray() },
+            new () { Name = "Daily",    Data = sortedEnums.Select(day => (double)dailyExecutions.Count(e => e.Time.DayOfWeek == day)).ToArray() },
+            new () { Name = "Weekly",   Data = sortedEnums.Select(day => (double)weeklyExecutions.Count(e => e.Time.DayOfWeek == day)).ToArray() }
+        };
+
+        await base.OnInitializedAsync();
+    }
+}
