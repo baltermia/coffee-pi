@@ -85,7 +85,7 @@ public class ExecutedController : Controller
         }
     }
 
-    [HttpGet("fromRoutine/{id}")]
+    [HttpGet("from-routine/{id}")]
     public ActionResult<IEnumerable<ExecutedRoutineDto>> GetFromRoutine(int id)
     {
         try
