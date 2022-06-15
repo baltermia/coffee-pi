@@ -25,7 +25,7 @@
 
         // get all executions for each routine type
 
-        IEnumerable<ExecutedRoutineDto> singleExecutions = 
+        IEnumerable<ExecutedRoutineDto> singleExecutions =
             (await Task.WhenAll(
                 routines.OfType<SingleRoutineDto>().Select(
                     async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"api/executed/from-routine/{e.Id}")
@@ -46,11 +46,11 @@
                 )
             )).SelectMany(e => e);
 
-        series = new ()
-        { 
-            new () { Name = "Single",   Data = sortedEnums.Select(day => (double)singleExecutions.Count(e => e.Time.DayOfWeek == day)).ToArray() },
-            new () { Name = "Daily",    Data = sortedEnums.Select(day => (double)dailyExecutions.Count(e => e.Time.DayOfWeek == day)).ToArray() },
-            new () { Name = "Weekly",   Data = sortedEnums.Select(day => (double)weeklyExecutions.Count(e => e.Time.DayOfWeek == day)).ToArray() }
+        series = new()
+        {
+            new () { Name = "Single", Data = sortedEnums.Select(day => (double)singleExecutions.Count(e => e.Time.DayOfWeek == day)).ToArray() },
+            new () { Name = "Daily", Data = sortedEnums.Select(day => (double)dailyExecutions.Count(e => e.Time.DayOfWeek == day)).ToArray() },
+            new () { Name = "Weekly", Data = sortedEnums.Select(day => (double)weeklyExecutions.Count(e => e.Time.DayOfWeek == day)).ToArray() }
         };
 
         await base.OnInitializedAsync();
