@@ -6,7 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoffeePi.Core.Repositories;
 
-public interface IExecutedRoutineRepository : IRepositoryBase<ExecutedRoutineDto> { }
+public interface IExecutedRoutineRepository : IRepositoryBase<ExecutedRoutineDto> 
+{
+    public IEnumerable<ExecutedRoutineDto> FindFromRoutineId(int id);
+}
 
 public class ExecutedRoutineRepository : IExecutedRoutineRepository
 {
@@ -29,6 +32,13 @@ public class ExecutedRoutineRepository : IExecutedRoutineRepository
             .AsNoTracking()
             .SingleOrDefault(e => e.Id == id)
             .ToDto();
+
+    public IEnumerable<ExecutedRoutineDto> FindFromRoutineId(int id) =>
+        _context
+            .Set<ExecutedRoutine>()
+            .AsNoTracking()
+            .Where(e => e.Routine.Id == id)
+            .Select(ExecutedRoutineMappings.ToDto);
 
     public async Task<ExecutedRoutineDto> CreateAsync(ExecutedRoutineDto dto)
     {
