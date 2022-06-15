@@ -10,6 +10,13 @@ public static class HttpExtensions
         TypeNameHandling = TypeNameHandling.Auto
     };
 
+    public static async Task<T> GetBasicAsync<T>(this HttpClient client, string url)
+    {
+        HttpResponseMessage response = await client.GetAsync(url);
+
+        return await response.DeserializeResponseAsync<T>();
+    }
+
     public static async Task<HttpResponseMessage> PostBasicAsync<T>(this HttpClient client, string url, T value)
     {
         string json = JsonConvert.SerializeObject(value, settings);
