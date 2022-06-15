@@ -23,6 +23,11 @@ public class RoutineService : IRoutineService
 
         foreach (CoffeeRoutine routine in openRoutines)
         {
+            if (token.IsCancellationRequested)
+            {
+                break;
+            }
+
             await ExecuteRoutineAsync(routine, false, token);
         }
 

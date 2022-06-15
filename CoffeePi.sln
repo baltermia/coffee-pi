@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeePi.Shared", "CoffeePi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeePi.Data", "CoffeePi.Data\CoffeePi.Data.csproj", "{475FB731-ECFB-4464-BCFE-F1DE0EB1FDD3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoffeePi.Mobile", "CoffeePi.Mobile", "{2CF86380-480A-4252-AAC7-CDDCFBFBA94C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeePi.Mobile.Android", "CoffeePi.Mobile.Android\CoffeePi.Mobile.Android.csproj", "{6178245D-1F2B-4193-A4C4-3F1959459D04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,18 @@ Global
 		{475FB731-ECFB-4464-BCFE-F1DE0EB1FDD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{475FB731-ECFB-4464-BCFE-F1DE0EB1FDD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{475FB731-ECFB-4464-BCFE-F1DE0EB1FDD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6178245D-1F2B-4193-A4C4-3F1959459D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6178245D-1F2B-4193-A4C4-3F1959459D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6178245D-1F2B-4193-A4C4-3F1959459D04}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6178245D-1F2B-4193-A4C4-3F1959459D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6178245D-1F2B-4193-A4C4-3F1959459D04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6178245D-1F2B-4193-A4C4-3F1959459D04}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6178245D-1F2B-4193-A4C4-3F1959459D04} = {2CF86380-480A-4252-AAC7-CDDCFBFBA94C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29DD09A2-48E0-46E2-B281-16640B8F9D02}
