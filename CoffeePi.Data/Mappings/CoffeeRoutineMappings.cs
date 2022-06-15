@@ -47,7 +47,7 @@ public static class CoffeeRoutineMappings
                 ButtonType = routine.ButtonType,
                 DayOfWeek = routine.DayOfWeek,
                 TimeOfDay = routine.TimeOfDay,
-                ExecutionIds = routine.Executions.Select(e => e.Id).ToList()
+                ExecutionIds = routine.Executions?.Select(e => e.Id).ToList() ?? default
             };
 
     public static DailyRoutineDto ToDto(this DailyRoutine routine) =>
@@ -59,7 +59,7 @@ public static class CoffeeRoutineMappings
                 ButtonType = routine.ButtonType,
                 DaysOfWeek = routine.DaysOfWeek,
                 TimeOfDay = routine.TimeOfDay,
-                ExecutionIds = routine.Executions.Select(e => e.Id).ToList()
+                ExecutionIds = routine.Executions?.Select(e => e.Id).ToList() ?? default
             };
     #endregion
 
