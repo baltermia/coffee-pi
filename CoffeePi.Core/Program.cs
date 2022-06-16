@@ -3,6 +3,8 @@ using CoffeePi.Core.Services;
 using CoffeePi.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.ComponentModel;
+using CoffeePi.Shared.Converters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,13 @@ builder.Services.AddSingleton<IPeriodicHostedService, PeriodicHostedService>();
 builder.Services.AddHostedService(provider => provider.GetRequiredService<IPeriodicHostedService>());
 
 // Add services to the container.
-builder.Services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto);
+builder.Services
+    .AddControllers(_ => TypeDescriptor.AddAttributes(typeof(TimeOnly), new TypeConverterAttribute(typeof(TimeOnlyTypeConverter))))
+    .AddNewtonsoftJson(options => 
+    {
+        options.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
+        options.SerializerSettings.Converters.Add(new TimeOnlyJsonConverter());
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

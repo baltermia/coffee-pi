@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CoffeePi.Shared.Converters;
+using Newtonsoft.Json;
 using System.Text;
 
 namespace CoffeePi.Shared.Utils;
@@ -7,7 +8,8 @@ public static class HttpExtensions
 {
     private static readonly JsonSerializerSettings settings = new()
     {
-        TypeNameHandling = TypeNameHandling.Auto
+        TypeNameHandling = TypeNameHandling.All,
+        Converters = { new TimeOnlyJsonConverter() }
     };
 
     public static async Task<T> GetBasicAsync<T>(this HttpClient client, string url)
