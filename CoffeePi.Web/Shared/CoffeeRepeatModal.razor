@@ -84,8 +84,7 @@
                 case "Weekly":
                     WeeklyRoutineDto WeeklyCoffee = new();
                     WeeklyCoffee.ButtonType = CoffeeType;
-                    WeeklyCoffee.TimeOfDay.AddHours(Time.Hour);
-                    WeeklyCoffee.TimeOfDay.AddMinutes(Time.Minute);
+                    WeeklyCoffee.TimeOfDay = new(Time.Hour, Time.Minute);
                     WeeklyCoffee.DayOfWeek = Time.DayOfWeek;
                     WeeklyCoffee.Enabled = true;
                     await Http.PostBasicAsync<WeeklyRoutineDto>("/api/weekly", WeeklyCoffee);
