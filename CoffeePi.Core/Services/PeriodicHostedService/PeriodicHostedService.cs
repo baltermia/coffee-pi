@@ -16,7 +16,7 @@ public class PeriodicHostedService : BackgroundService, IPeriodicHostedService
 
     protected async override Task ExecuteAsync(CancellationToken token)
     {
-        using PeriodicTimer timer = new (period);
+        using PeriodicTimer timer = new(period);
 
         while (!token.IsCancellationRequested && await timer.WaitForNextTickAsync(token))
         {
@@ -25,15 +25,11 @@ public class PeriodicHostedService : BackgroundService, IPeriodicHostedService
                 continue;
             }
 
-            try
-            {
-                await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
+            await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
 
-                IRoutineService routineService = asyncScope.ServiceProvider.GetRequiredService<IRoutineService>();
+            IRoutineService routineService = asyncScope.ServiceProvider.GetRequiredService<IRoutineService>();
 
-                await routineService.CheckAllRoutinesAsync(token);
-            }
-            catch { } // TODO: Add exception logging (perhaps?)
+            await routineService.CheckAllRoutinesAsync(token);
         }
     }
 }
