@@ -13,7 +13,14 @@ public class GpioService : IGpioService // TODO: Test implementation on raspberr
 
     public GpioService()
     {
-        controller = new();
+        try
+        {
+            controller = new();
+        }
+        catch
+        {
+            return;
+        }
 
         foreach (CoffeeButton pin in Enum.GetValues<CoffeeButton>())
         {
@@ -66,7 +73,7 @@ public class GpioService : IGpioService // TODO: Test implementation on raspberr
 
         if (isDisposing)
         {
-            controller.Dispose();
+            controller?.Dispose();
         }
 
         disposed = true;

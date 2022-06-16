@@ -1,5 +1,6 @@
 ﻿using CoffeePi.Data.Configuration;
 using CoffeePi.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoffeePi.Core.Services;
 
@@ -19,6 +20,9 @@ public class RoutineService : IRoutineService
         IEnumerable<CoffeeRoutine> openRoutines =
             _context
                 .Set<CoffeeRoutine>()
+                .Include(e => (e as SingleRoutine).Execution)
+                .Include(e => (e as DailyRoutine).Executions)
+                .Include(e => (e as WeeklyRoutine).Executions)
                 .Where(CoffeeRoutineCheckExtensions.ShouldRoutineBeExecuted);
 
         foreach (CoffeeRoutine routine in openRoutines)
@@ -52,7 +56,6 @@ public class RoutineService : IRoutineService
             success = false;
         }
 
-
         ExecutedRoutine execution = new()
         {
             Routine = routine,
@@ -61,6 +64,25 @@ public class RoutineService : IRoutineService
         };
 
         await _context.AddAsync(execution, token);
+
+        if (routine is SingleRoutine single)
+        {
+            single.Execution = execution;
+        }
+        else if (routine is DailyRoutine daily)
+        {
+            daily.Executions ??= new List<ExecutedRoutine>();
+
+            daily.Executions.Add(execution);
+        }
+        else if (routine is WeeklyRoutine weekly)
+        {
+            weekly.Executions ??= new List<ExecutedRoutine>();
+
+            weekly.Executions.Add(execution);
+        }
+
+        _context.Update(routine);
 
         if (saveDbChanges)
         {
@@ -90,12 +112,12 @@ public static class CoffeeRoutineCheckExtensions
     public static bool ShouldRoutineBeExecuted(this WeeklyRoutine weekly) =>
         weekly.Enabled &&
         weekly.DayOfWeek == DateTime.Now.DayOfWeek &&
-        !weekly.Executions.Any(e => e.Time.Date == DateTime.Today) &&
+        (!weekly.Executions?.Any(e => e.Time.Date == DateTime.Today) ?? true) &&
         weekly.TimeOfDay.ToTimeSpan() < DateTime.Now.TimeOfDay;
 
     public static bool ShouldRoutineBeExecuted(this DailyRoutine daily) =>
         daily.Enabled &&
         daily.DaysOfWeek.Contains(DateTime.Now.DayOfWeek) &&
-        !daily.Executions.Any(e => e.Time.Date == DateTime.Today) &&
+        (!daily.Executions?.Any(e => e.Time.Date == DateTime.Today) ?? true) &&
         daily.TimeOfDay.ToTimeSpan() < DateTime.Now.TimeOfDay;
 }
