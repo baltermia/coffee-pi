@@ -41,13 +41,24 @@ public class RoutineService : IRoutineService
             return;
         }
 
-        await _gpio.SimulatePressAsync(routine.ButtonType, token: token);
+        bool success = true;
 
-        ExecutedRoutine execution = new ();
+        try
+        {
+            await _gpio.SimulatePressAsync(routine.ButtonType, token: token);
+        }
+        catch
+        {
+            success = false;
+        }
 
-        execution.Routine = routine;
-        execution.Success = true;
-        execution.Time = DateTime.Now;
+
+        ExecutedRoutine execution = new()
+        {
+            Routine = routine,
+            Success = success,
+            Time = DateTime.Now
+        };
 
         await _context.AddAsync(execution, token);
 
