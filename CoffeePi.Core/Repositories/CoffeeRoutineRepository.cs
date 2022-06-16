@@ -27,12 +27,18 @@ public class CoffeeRoutineRepository : ICoffeeRoutineRepository
         _context
             .Set<CoffeeRoutine>()
             .AsNoTracking()
+            .Include(e => (e as SingleRoutine).Execution)
+            .Include(e => (e as DailyRoutine).Executions)
+            .Include(e => (e as WeeklyRoutine).Executions)
             .Select(CoffeeRoutineMappings.ToDto);
 
     public CoffeeRoutineDto FindById(int id) =>
         _context
             .Set<CoffeeRoutine>()
             .AsNoTracking()
+            .Include(e => (e as SingleRoutine).Execution)
+            .Include(e => (e as DailyRoutine).Executions)
+            .Include(e => (e as WeeklyRoutine).Executions)
             .SingleOrDefault(e => e.Id == id)
             .ToDto();
 

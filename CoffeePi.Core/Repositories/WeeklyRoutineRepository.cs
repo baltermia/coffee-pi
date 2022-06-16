@@ -22,6 +22,7 @@ public class WeeklyRoutineRepository : IWeeklyRoutineRepository
             .Set<CoffeeRoutine>()
             .OfType<WeeklyRoutine>()
             .AsNoTracking()
+            .Include(e => e.Executions)
             .Select(CoffeeRoutineMappings.ToDto);
 
     public WeeklyRoutineDto FindById(int id) =>
@@ -29,6 +30,7 @@ public class WeeklyRoutineRepository : IWeeklyRoutineRepository
             .Set<CoffeeRoutine>()
             .OfType<WeeklyRoutine>()
             .AsNoTracking()
+            .Include(e => e.Executions)
             .SingleOrDefault(e => e.Id == id)
             .ToDto();
 
@@ -49,6 +51,7 @@ public class WeeklyRoutineRepository : IWeeklyRoutineRepository
             _context
                 .Set<CoffeeRoutine>()
                 .OfType<WeeklyRoutine>()
+                .Include(e => e.Executions)
                 .Single(e => e.Id == dto.Id);
 
         routine = dto.ToModel(routine);

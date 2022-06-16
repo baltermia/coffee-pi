@@ -24,12 +24,14 @@ public class ExecutedRoutineRepository : IExecutedRoutineRepository
         _context
             .Set<ExecutedRoutine>()
             .AsNoTracking()
+            .Include(e => e.Routine)
             .Select(ExecutedRoutineMappings.ToDto);
 
     public ExecutedRoutineDto FindById(int id) =>
         _context
             .Set<ExecutedRoutine>()
             .AsNoTracking()
+            .Include(e => e.Routine)
             .SingleOrDefault(e => e.Id == id)
             .ToDto();
 
@@ -37,6 +39,7 @@ public class ExecutedRoutineRepository : IExecutedRoutineRepository
         _context
             .Set<ExecutedRoutine>()
             .AsNoTracking()
+            .Include(e => e.Routine)
             .Where(e => e.Routine.Id == id)
             .Select(ExecutedRoutineMappings.ToDto);
 
@@ -58,6 +61,7 @@ public class ExecutedRoutineRepository : IExecutedRoutineRepository
         ExecutedRoutine routine =
             _context
                 .Set<ExecutedRoutine>()
+                .Include(e => e.Routine)
                 .Single(e => e.Id == dto.Id);
 
         routine = dto.ToModel(routine);
