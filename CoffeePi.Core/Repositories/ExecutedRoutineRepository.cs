@@ -44,6 +44,8 @@ public class ExecutedRoutineRepository : IExecutedRoutineRepository
     {
         ExecutedRoutine routine = dto.ToModel();
 
+        routine.Routine = _context.CoffeeRoutines.Single(e => e.Id == dto.Id);
+
         await _context.AddAsync(routine);
 
         await _context.SaveChangesAsync();
