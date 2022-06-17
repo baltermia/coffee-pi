@@ -51,9 +51,9 @@ public class RoutineService : IRoutineService
 
         try
         {
-            await _simulation.SendButtonPress(routine.ButtonType, token);
+            await _simulation.SendButtonPress(routine.ButtonType, token: token);
 
-            await _gpio.SimulatePressAsync(routine.ButtonType, token: token);
+            // await _gpio.SimulatePressAsync(routine.ButtonType, token: token);
         }
         catch
         {
