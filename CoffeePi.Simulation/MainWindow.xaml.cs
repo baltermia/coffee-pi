@@ -1,10 +1,10 @@
-﻿using CoffeePi.Shared.DataTransferObjects;
+﻿using CoffeePi.Shared.Enums;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml.Serialization;
 
 namespace CoffeePi.Simulation
 {
@@ -13,8 +13,11 @@ namespace CoffeePi.Simulation
     /// </summary>
     public partial class MainWindow : Window
     {
-        private CancellationTokenSource source;
+        private readonly CancellationTokenSource source;
         private CancellationToken Token => source.Token;
+
+        private readonly string IP = "127.0.0.1";
+        private readonly int Port = 1302;
 
         public MainWindow()
         {
@@ -25,33 +28,29 @@ namespace CoffeePi.Simulation
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            await Listener();
+            await ListenAsync();
         }
 
-        private async Task Listener()
+        private async Task ListenAsync()
         {
-            TcpListener listener = new(IPAddress.Parse("127.0.0.1"), 1302);
+            TcpListener listener = new(IPAddress.Parse(IP), Port);
+
             listener.Start();
             
             while (!Token.IsCancellationRequested)
             {
-                using TcpClient client = await listener.AcceptTcpClientAsync();
+                using TcpClient client = await listener.AcceptTcpClientAsync(Token);
+                using NetworkStream recieverStream = client.GetStream();
 
-                using NetworkStream stream = client.GetStream();
-                XmlSerializer serializer = new(typeof(TcpSocketButtonDto));
+                CoffeeButton button = await JsonSerializer.DeserializeAsync<CoffeeButton>(recieverStream, cancellationToken: Token);
 
-                TcpSocketButtonDto dto = serializer.Deserialize(stream) as TcpSocketButtonDto;
-
-                if (dto != default(TcpSocketButtonDto))
-                {
-                    HandleDto(dto);
-                }
+                HandleSimulation(button);                
             }
         }
 
-        private void HandleDto(TcpSocketButtonDto dto)
+        private void HandleSimulation(CoffeeButton button)
         {
-            tbkResult.Text += $"New Result: {dto.Button}, {dto.State}\n"; 
+            tbkResult.Text += $"New Result: {button}\n"; 
         }
     }
 }

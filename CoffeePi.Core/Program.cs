@@ -5,16 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using CoffeePi.Shared.Converters;
-using System.Net.Sockets;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-// Add TcpClient as Service
-builder.Services.AddScoped(_ => new TcpClient("127.0.0.1", 1302));
-
 // Custom Services
 builder.Services.AddScoped<IGpioService, GpioService>();
-builder.Services.AddScoped<ISimulationService, SimulationService>();
+builder.Services.AddScoped<ISimulationService, SimulationService>(_ => new SimulationService("127.0.0.1", 1302));
 
 // Repositories
 builder.Services.AddScoped<ICoffeeRoutineRepository, CoffeeRoutineRepository>();
