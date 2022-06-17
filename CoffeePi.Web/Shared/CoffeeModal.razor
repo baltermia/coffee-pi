@@ -28,7 +28,7 @@
             </MudSelect>
             @if (RoutineType == "Custom")
             {
-                <MudSelect T="DayOfWeek" Label="Custom" MultiSelection="true" @bind-SelectedValues="ienum" Class="pa-4">
+                <MudSelect T="DayOfWeek" Label="Custom" MultiSelection="true" @bind-SelectedValues="selectedDays" Class="pa-4">
 
                         <MudSelectItem Value="DayOfWeek.Monday">Monday</MudSelectItem>
                         <MudSelectItem Value="DayOfWeek.Tuesday">Tuesday</MudSelectItem>
@@ -59,7 +59,7 @@
     MudDialogInstance MudDialog { get; set; }
     private DateTime time = DateTime.Now;
     private string RoutineType;
-    IEnumerable<DayOfWeek> ienum;
+    IEnumerable<DayOfWeek> selectedDays;
 
 
     async Task Submit()
@@ -109,7 +109,7 @@
                     break;
 
                 case "Custom":
-                    days = ienum.ToList();
+                    days = selectedDays.ToList();
                     DailyRoutineDto CustomCoffee = new();
                     CustomCoffee.ButtonType = CoffeeType;
                     CustomCoffee.TimeOfDay = TimeOnly.FromDateTime(time);

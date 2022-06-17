@@ -12,32 +12,33 @@
 
 <MudButton Variant="Variant.Filled" @onclick="NewRoutine"> New Routine </MudButton>
 
+    <MudTable Items="@dailyRoutines" Loading="@_loading"  >
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Daily Routines</MudText>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Coffee Type</MudTh>
+            <MudTh>Executes Every</MudTh>
+            <MudTh>On</MudTh>
+            <MudTh>Disable</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Id</MudTd>
+            <MudTd>@context.ButtonType</MudTd>
+            @if (context.DaysOfWeek.Count == 7)
+            {
+                <MudTd>Day</MudTd>
+            }
+            else
+            {
+                <MudTd>@(string.Join(", ", context.DaysOfWeek))</MudTd>
+            }
 
-<MudTable Items="@dailyRoutines" Loading="@_loading" >
-    <ToolBarContent>
-        <MudText Typo="Typo.h6">Daily Routines</MudText>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>Id</MudTh>
-        <MudTh>Coffee Type</MudTh>
-        <MudTh>Executes Every</MudTh>
-        <MudTh>On</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd>@context.Id</MudTd>
-        <MudTd>@context.ButtonType</MudTd>
-        @if (context.DaysOfWeek.Count == 7)
-        {
-            <MudTd>Day</MudTd>
-        }
-        else
-        {
-            <MudTd>@(string.Join(", ", context.DaysOfWeek))</MudTd>
-        }
-
-        <MudTd>@context.TimeOfDay</MudTd>
-    </RowTemplate>
-</MudTable>
+            <MudTd>@context.TimeOfDay</MudTd>
+            <MudTd><MudButton @onclick="@(() => DisableRoutine(context.Id))">Disable</MudButton></MudTd>
+        </RowTemplate>
+    </MudTable>
 
 <MudTable Items="@weeklyRoutines" Loading="@_loading" >
     <ToolBarContent>
@@ -48,12 +49,14 @@
         <MudTh>Coffee Type</MudTh>
         <MudTh>Executes Every</MudTh>
         <MudTh>On</MudTh>
+        <MudTh>Disable</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd>@context.Id</MudTd>
         <MudTd>@context.ButtonType</MudTd>
         <MudTd>@context.DayOfWeek</MudTd>
         <MudTd>@context.TimeOfDay</MudTd>
+        <MudTd><MudButton @onclick="@(() => DisableRoutine(context.Id))">Disable</MudButton></MudTd>
     </RowTemplate>
 </MudTable>
 
@@ -65,11 +68,13 @@
         <MudTh>Id</MudTh>
         <MudTh>Coffee Type</MudTh>
         <MudTh>Executed on</MudTh>
+        <MudTh>Disable</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd>@context.Id</MudTd>
         <MudTd>@context.ButtonType</MudTd>
         <MudTd>@context.Time</MudTd>
+        <MudTd><MudButton @onclick="@(() => DisableRoutine(context.Id))">Disable</MudButton></MudTd>
     </RowTemplate>
 </MudTable>
 
@@ -98,10 +103,11 @@
         _loading = true;
         try
         {
-            dailyRoutines = await Http.GetBasicAsync<List<DailyRoutineDto>>("/api/daily");
-            weeklyRoutines = await Http.GetBasicAsync<List<WeeklyRoutineDto>>("/api/weekly");
-            singleRoutines = await Http.GetBasicAsync<List<SingleRoutineDto>>("/api/single");
             allRoutines = await Http.GetBasicAsync<List<CoffeeRoutineDto>>("/api/routine");
+
+            singleRoutines = allRoutines.OfType<SingleRoutineDto>().Where(x => x.Enabled == true);
+            dailyRoutines = allRoutines.OfType<DailyRoutineDto>().Where(x => x.Enabled == true);
+            weeklyRoutines = allRoutines.OfType<WeeklyRoutineDto>().Where(x => x.Enabled == true);
 
             _loading = false;
             StateHasChanged();
@@ -112,5 +118,14 @@
             _loading = false;
         }
     }
+
+    private async void DisableRoutine (int id)
+    {
+        CoffeeRoutineDto routine = allRoutines.First(x => x.Id == id);
+        routine.Enabled = false;
+        await Http.PutBasicAsync<CoffeeRoutineDto>($"/api/routine/{routine.Id}", routine);
+        OnInitializedAsync();
+    }
+
 }
 
