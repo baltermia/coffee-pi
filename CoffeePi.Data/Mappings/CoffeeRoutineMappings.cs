@@ -33,6 +33,7 @@ public static class CoffeeRoutineMappings
             new SingleRoutineDto
             {
                 Id = routine.Id,
+                Enabled = routine.Enabled,
                 ButtonType = routine.ButtonType,
                 Time = routine.Time,
                 ExecutionId = routine.Execution?.Id ?? default
@@ -44,6 +45,7 @@ public static class CoffeeRoutineMappings
             new WeeklyRoutineDto
             {
                 Id = routine.Id,
+                Enabled = routine.Enabled,
                 ButtonType = routine.ButtonType,
                 DayOfWeek = routine.DayOfWeek,
                 TimeOfDay = routine.TimeOfDay,
@@ -56,6 +58,7 @@ public static class CoffeeRoutineMappings
             new DailyRoutineDto
             {
                 Id = routine.Id,
+                Enabled = routine.Enabled,
                 ButtonType = routine.ButtonType,
                 DaysOfWeek = routine.DaysOfWeek,
                 TimeOfDay = routine.TimeOfDay,
@@ -76,6 +79,7 @@ public static class CoffeeRoutineMappings
     {
         routine ??= new();
 
+        routine.Enabled = dto.Enabled;
         routine.ButtonType = dto.ButtonType;
         routine.Time = dto.Time;
 
@@ -86,6 +90,7 @@ public static class CoffeeRoutineMappings
     {
         routine ??= new();
 
+        routine.Enabled = dto.Enabled;
         routine.ButtonType = dto.ButtonType;
         routine.TimeOfDay = dto.TimeOfDay;
         routine.DayOfWeek = dto.DayOfWeek;
@@ -97,6 +102,7 @@ public static class CoffeeRoutineMappings
     {
         routine ??= new();
 
+        routine.Enabled = dto.Enabled;
         routine.ButtonType = dto.ButtonType;
         routine.TimeOfDay = dto.TimeOfDay;
         routine.DaysOfWeek = dto.DaysOfWeek;
