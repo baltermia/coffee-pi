@@ -8,11 +8,13 @@ public class RoutineService : IRoutineService
 {
     private readonly CoffeePiContext _context;
     private readonly IGpioService _gpio;
+    private readonly ISimulationService _simulation;
 
-    public RoutineService(CoffeePiContext context, IGpioService gpio)
+    public RoutineService(CoffeePiContext context, IGpioService gpio, ISimulationService simulation)
     {
         _context = context;
         _gpio = gpio;
+        _simulation = simulation;
     }
 
     public async Task CheckAllRoutinesAsync(CancellationToken token = default)
@@ -49,6 +51,8 @@ public class RoutineService : IRoutineService
 
         try
         {
+            await _simulation.SendButtonPress(routine.ButtonType, token);
+
             await _gpio.SimulatePressAsync(routine.ButtonType, token: token);
         }
         catch
