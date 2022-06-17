@@ -20,20 +20,16 @@
 
     private int Index = -1;
     private IEnumerable<ExecutedRoutineDto>? coffees = new List<ExecutedRoutineDto>();
-    private IEnumerable<DailyRoutineDto>? dailyRoutines = new List<DailyRoutineDto>();
-    private IEnumerable<WeeklyRoutineDto>? weeklyRoutines = new List<WeeklyRoutineDto>();
-    private IEnumerable<SingleRoutineDto>? singleRoutines = new List<SingleRoutineDto>();
     private IEnumerable<CoffeeRoutineDto>? allRoutines = new List<CoffeeRoutineDto>();
+    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             coffees = await Http.GetFromJsonAsync<List<ExecutedRoutineDto>>("/api/executed/");
-            allRoutines = await HttpExtensions.DeserializeResponseAsync<List<CoffeeRoutineDto>>(await Http.GetAsync("/api/routine"));
-            dailyRoutines = await HttpExtensions.DeserializeResponseAsync<List<DailyRoutineDto>>(await Http.GetAsync("/api/daily"));
-            weeklyRoutines = await HttpExtensions.DeserializeResponseAsync<List<WeeklyRoutineDto>>(await Http.GetAsync("/api/weekly"));
-            singleRoutines = await HttpExtensions.DeserializeResponseAsync<List<SingleRoutineDto>>(await Http.GetAsync("/api/single"));
+            allRoutines = await Http.GetBasicAsync<List<CoffeeRoutineDto>>("/api/routine");
+            SetChartData();
             StateHasChanged();
         }
         catch (HttpRequestException e)
@@ -43,22 +39,10 @@
 
     }
 
-    private List<int> GetAllRoutineIds()
+    private CoffeeButton GetCoffeeType(int routineId)
     {
-        List<int> ids = new();
-        foreach (var dailyRoutine in dailyRoutines)
-        {
-            ids.Add(dailyRoutine.Id);
-        }
-        foreach (var weeklyRoutine in weeklyRoutines)
-        {
-            ids.Add(weeklyRoutine.Id);
-        }
-        foreach (var singleRoutine in singleRoutines)
-        {
-            ids.Add(singleRoutine.Id);
-        }
-        return ids;
+        CoffeeRoutineDto coffee = allRoutines.First(x => x.Id == routineId);
+        return coffee.ButtonType;
     }
 
     private int GetCoffeesOfTypePerMonth(CoffeeButton coffeeType, int i)
@@ -68,7 +52,8 @@
         int coffeesinmonth = 0;
         foreach (var coffee in coffees)
         {
-            if ((coffee.Time.ToString("MMM") == month) && (GetAllRoutineIds().Contains(coffee.RoutineId)))
+            
+            if ((coffee.Time.ToString("MMM") == month) && (GetCoffeeType(coffee.RoutineId) == coffeeType))
             {
                 coffeesinmonth++;
             }
@@ -81,20 +66,19 @@
 
         for (int i = 1; i < 13; i++)
         {
-            Series[0].Data[i] = GetCoffeesOfTypePerMonth(CoffeeButton.Espresso, i);
-            Series[0].Data[i] = GetCoffeesOfTypePerMonth(CoffeeButton.SmallCup, i);
-            Series[0].Data[i] = GetCoffeesOfTypePerMonth(CoffeeButton.BigCup, i);
-            Series[0].Data[i] = GetCoffeesOfTypePerMonth(CoffeeButton.HotWater, i);
+            Series[0].Data[i-1] = GetCoffeesOfTypePerMonth(CoffeeButton.Espresso, i);
+            Series[1].Data[i-1] = GetCoffeesOfTypePerMonth(CoffeeButton.SmallCup, i);
+            Series[2].Data[i-1] = GetCoffeesOfTypePerMonth(CoffeeButton.BigCup, i);
+            Series[3].Data[i-1] = GetCoffeesOfTypePerMonth(CoffeeButton.HotWater, i);
         }
 
     }
 
     public List<ChartSeries>? Series = new List<ChartSeries>()
     {
-        new ChartSeries() { Name = "Espresso", Data = new double[]{} },
-        new ChartSeries() { Name = "Small Cup", Data = new double[]{} },
-        new ChartSeries() { Name = "Big Cup", Data = new double[]{} },
-        new ChartSeries() { Name = "Hot Water", Data = new double[]{} },
+        new ChartSeries() { Name = "Espresso", Data = new double[13] },
+        new ChartSeries() { Name = "Small Cup", Data = new double[13] },
+        new ChartSeries() { Name = "Big Cup", Data = new double[13] },
+        new ChartSeries() { Name = "Hot Water", Data = new double[13] },
     };
-    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 }

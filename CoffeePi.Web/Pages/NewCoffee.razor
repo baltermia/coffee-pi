@@ -27,7 +27,15 @@
     <RowTemplate>
         <MudTd>@context.Id</MudTd>
         <MudTd>@context.ButtonType</MudTd>
-        <MudTd>daily</MudTd> @*ToDo: Change to Display specific Days*@
+        @if (context.DaysOfWeek.Count == 7)
+        {
+            <MudTd>Day</MudTd>
+        }
+        else
+        {
+            <MudTd>@(string.Join(", ", context.DaysOfWeek))</MudTd>
+        }
+
         <MudTd>@context.TimeOfDay</MudTd>
         <MudTd><MudButton @onclick="@(() => DeleteDaily(context.Id))">Delete</MudButton></MudTd>
     </RowTemplate>
