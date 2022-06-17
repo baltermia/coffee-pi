@@ -1,6 +1,7 @@
 ﻿@using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 @using CoffeePi.Shared.DataTransferObjects
+@using System.Linq
 
 @inject ISnackbar Snackbar
 @inject HttpClient Http
@@ -15,8 +16,27 @@
                 <MudSelectItem Value=CoffeeButton.BigCup>Grosser Kaffee</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.Espresso>Espresso</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.HotWater>Heisses Wasser für Tee</MudSelectItem>
+
+                <RadzenDatePicker TValue="DateTime" ShowTime="true" HoursStep="1.5" MinutesStep="5" @bind-Value=@time/>
+                <MudButton OnClick="TimeNow">Jetzt</MudButton>
             </MudSelect>
-            </MudForm>   
+            <MudSelect T=string Label="Select" AnchorOrigin="Origin.BottomCenter" @bind-Value="RoutineType">
+                @*ToDo: Add Repetition for Multiple Days of Week*@
+                <MudSelectItem Value="@("Once")">Keine Wiederholung</MudSelectItem>
+                <MudSelectItem Value="@("Daily")">Täglich</MudSelectItem>
+                <MudSelectItem Value="@("Weekly")">Wöchentlich</MudSelectItem>
+                <MudSelectItem Value="@("Custom")">Benutzerdefiniert</MudSelectItem>
+            </MudSelect>
+            @if (RoutineType == "Custom")
+            {
+                <MudSelect T="DayOfWeek" Label="Custom" MultiSelection="true" @bind-SelectedValues="ienum">
+
+                        <MudSelectItem Value="DayOfWeek.Monday">Monday</MudSelectItem>
+                        <MudSelectItem Value="DayOfWeek.Tuesday">Tuesday</MudSelectItem>
+
+                </MudSelect>
+            }
+        </MudForm>   
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Abbrechen</MudButton>
@@ -33,20 +53,82 @@
     private CoffeeButton CoffeeType = new();
     [CascadingParameter] 
     MudDialogInstance MudDialog { get; set; }
+    private DateTime time = DateTime.Now;
+    private string RoutineType;
+    IEnumerable<DayOfWeek> ienum;
+
 
     async Task Submit()
     {
-        var parameters = new DialogParameters();
-        var options = new MudBlazor.DialogOptions { CloseOnEscapeKey = true };
-        parameters.Add("CoffeeType", CoffeeType);
-        var Dialog = DialogService.Show<CoffeeTimeModal>("zeit", parameters, options);
-       var result = await Dialog.Result;
+
+        try
+        {
+            switch (RoutineType) //ToDo: Fix DateTime to TimeOnly Conversion
+            {
+                case "Once":
+                    SingleRoutineDto SingleCoffee = new();
+                    SingleCoffee.ButtonType = CoffeeType;
+                    SingleCoffee.Time = time;
+                    SingleCoffee.Enabled = true;
+                    await Http.PostBasicAsync<SingleRoutineDto>("/api/single", SingleCoffee);
+
+
+                    break;
+
+                case "Daily":
+                    List<DayOfWeek> days = new();
+                    DailyRoutineDto DailyCoffee = new();
+                    DailyCoffee.ButtonType = CoffeeType;
+                    DailyCoffee.TimeOfDay = TimeOnly.FromDateTime(time);
+                    DailyCoffee.Enabled = true;
+                    //ToDo: Automate
+                    days.Add(DayOfWeek.Monday);
+                    days.Add(DayOfWeek.Tuesday);
+                    days.Add(DayOfWeek.Wednesday);
+                    days.Add(DayOfWeek.Thursday);
+                    days.Add(DayOfWeek.Friday);
+                    days.Add(DayOfWeek.Saturday);
+                    days.Add(DayOfWeek.Sunday);
+                    
+                    DailyCoffee.DaysOfWeek = days;
+
+                    await Http.PostBasicAsync<DailyRoutineDto>("/api/daily", DailyCoffee);
+                    break;
+
+                case "Weekly":
+                    WeeklyRoutineDto WeeklyCoffee = new();
+                    WeeklyCoffee.ButtonType = CoffeeType;
+                    WeeklyCoffee.TimeOfDay = TimeOnly.FromDateTime(time);
+                    WeeklyCoffee.DayOfWeek = time.DayOfWeek;
+                    WeeklyCoffee.Enabled = true;
+                    await Http.PostBasicAsync<WeeklyRoutineDto>("/api/weekly", WeeklyCoffee);
+                    break;
+
+                case "Custom":
+                    days = ienum.ToList();
+                    DailyRoutineDto CustomCoffee = new();
+                    CustomCoffee.ButtonType = CoffeeType;
+                    CustomCoffee.TimeOfDay = TimeOnly.FromDateTime(time);
+                    CustomCoffee.Enabled = true;                 
+                    CustomCoffee.DaysOfWeek = days;
+
+                    await Http.PostBasicAsync<DailyRoutineDto>("/api/daily", CustomCoffee);
+                    break;
+            }
+        }
+        catch (HttpRequestException e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+        }
 
        MudDialog.Close(DialogResult.Ok(true));
     }
 
 
-
+    async void TimeNow()
+    {
+        time = DateTime.Now;
+    }
 
 
     void Cancel() => MudDialog.Cancel();
