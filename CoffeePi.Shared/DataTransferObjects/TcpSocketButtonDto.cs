@@ -2,6 +2,7 @@
 
 namespace CoffeePi.Shared.DataTransferObjects;
 
+[Serializable]
 public class TcpSocketButtonDto
 {
     public CoffeeButton Button { get; set; }
