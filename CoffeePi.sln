@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeePi.Shared", "CoffeePi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeePi.Data", "CoffeePi.Data\CoffeePi.Data.csproj", "{475FB731-ECFB-4464-BCFE-F1DE0EB1FDD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeePi.Mobile", "CoffeePi.Mobile\CoffeePi.Mobile.csproj", "{FACE52C8-01E6-43AD-A17D-503153A1088D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeePi.Mobile", "CoffeePi.Mobile\CoffeePi.Mobile.csproj", "{FACE52C8-01E6-43AD-A17D-503153A1088D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeePi.Simulation", "CoffeePi.Simulation\CoffeePi.Simulation.csproj", "{78FD45DA-0ADD-4942-8009-853B2E92125F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{FACE52C8-01E6-43AD-A17D-503153A1088D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FACE52C8-01E6-43AD-A17D-503153A1088D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FACE52C8-01E6-43AD-A17D-503153A1088D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{78FD45DA-0ADD-4942-8009-853B2E92125F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78FD45DA-0ADD-4942-8009-853B2E92125F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78FD45DA-0ADD-4942-8009-853B2E92125F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78FD45DA-0ADD-4942-8009-853B2E92125F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
