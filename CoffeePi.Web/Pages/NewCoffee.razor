@@ -22,7 +22,6 @@
         <MudTh>Coffee Type</MudTh>
         <MudTh>Executes Every</MudTh>
         <MudTh>On</MudTh>
-        <MudTh>Delete Routine</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd>@context.Id</MudTd>
@@ -37,7 +36,6 @@
         }
 
         <MudTd>@context.TimeOfDay</MudTd>
-        <MudTd><MudButton @onclick="@(() => DeleteDaily(context.Id))">Delete</MudButton></MudTd>
     </RowTemplate>
 </MudTable>
 
@@ -50,14 +48,12 @@
         <MudTh>Coffee Type</MudTh>
         <MudTh>Executes Every</MudTh>
         <MudTh>On</MudTh>
-        <MudTh>Delete Routine</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd>@context.Id</MudTd>
         <MudTd>@context.ButtonType</MudTd>
         <MudTd>@context.DayOfWeek</MudTd>
         <MudTd>@context.TimeOfDay</MudTd>
-        <MudTd><MudButton @onclick="@(() => DeleteWeekly(context.Id))">Delete</MudButton></MudTd>
     </RowTemplate>
 </MudTable>
 
@@ -69,13 +65,11 @@
         <MudTh>Id</MudTh>
         <MudTh>Coffee Type</MudTh>
         <MudTh>Executed on</MudTh>
-        <MudTh>Delete Routine</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd>@context.Id</MudTd>
         <MudTd>@context.ButtonType</MudTd>
         <MudTd>@context.Time</MudTd>
-        <MudTd><MudButton @onclick="@(() => DeleteWeekly(context.Id))">Delete</MudButton></MudTd>
     </RowTemplate>
 </MudTable>
 
@@ -85,13 +79,14 @@
     private IEnumerable<DailyRoutineDto>? dailyRoutines = new List<DailyRoutineDto>();
     private IEnumerable<WeeklyRoutineDto>? weeklyRoutines = new List<WeeklyRoutineDto>();
     private IEnumerable<SingleRoutineDto>? singleRoutines = new List<SingleRoutineDto>();
+    private IEnumerable<CoffeeRoutineDto>? allRoutines = new List<CoffeeRoutineDto>();
     private bool _loading;
 
     async private void NewRoutine()
     {
         var parameters = new DialogParameters();
         var options = new MudBlazor.DialogOptions { CloseOnEscapeKey = true };
-        var Dialog = DialogService.Show<CoffeeTypeModal>("Neuer Kaffee", parameters, options);
+        var Dialog = DialogService.Show<CoffeeModal>("Neuer Kaffee", parameters, options);
 
         var result = await Dialog.Result;
         await OnInitializedAsync();
@@ -106,6 +101,7 @@
             dailyRoutines = await Http.GetBasicAsync<List<DailyRoutineDto>>("/api/daily");
             weeklyRoutines = await Http.GetBasicAsync<List<WeeklyRoutineDto>>("/api/weekly");
             singleRoutines = await Http.GetBasicAsync<List<SingleRoutineDto>>("/api/single");
+            allRoutines = await Http.GetBasicAsync<List<CoffeeRoutineDto>>("/api/routine");
 
             _loading = false;
             StateHasChanged();
@@ -116,14 +112,5 @@
             _loading = false;
         }
     }
-
-
-    async void DeleteDaily(int id)
-    {
-        await Http.DeleteAsync($"/{id}");
-    }
-    async void DeleteWeekly(int id)
-    {
-        await Http.DeleteAsync($"/{id}");
-    }
 }
+

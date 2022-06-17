@@ -9,19 +9,18 @@
 
 <MudDialog>
     <DialogContent>
+        <MudPaper>
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
 
-            <MudSelect T=CoffeeButton Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="CoffeeType" Text="Select Coffee Type" >
+            <MudSelect T=CoffeeButton Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="CoffeeType" Text="Select Coffee Type" Class="pa-4" >
                 <MudSelectItem Value=CoffeeButton.SmallCup>Kleiner Kaffee</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.BigCup>Grosser Kaffee</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.Espresso>Espresso</MudSelectItem>
                 <MudSelectItem Value=CoffeeButton.HotWater>Heisses Wasser für Tee</MudSelectItem>
-
-                <RadzenDatePicker TValue="DateTime" ShowTime="true" HoursStep="1.5" MinutesStep="5" @bind-Value=@time/>
-                <MudButton OnClick="TimeNow">Jetzt</MudButton>
             </MudSelect>
-            <MudSelect T=string Label="Select" AnchorOrigin="Origin.BottomCenter" @bind-Value="RoutineType">
-                @*ToDo: Add Repetition for Multiple Days of Week*@
+                <RadzenDatePicker TValue="DateTime" ShowTime="true" HoursStep="1.5" MinutesStep="5" @bind-Value=@time Class="pa-4"  />
+                <MudButton OnClick="TimeNow">Jetzt</MudButton>
+            <MudSelect T=string Label="Wiederholung" AnchorOrigin="Origin.BottomCenter" @bind-Value="RoutineType" Text="Select Repetition" Class="pa-4">
                 <MudSelectItem Value="@("Once")">Keine Wiederholung</MudSelectItem>
                 <MudSelectItem Value="@("Daily")">Täglich</MudSelectItem>
                 <MudSelectItem Value="@("Weekly")">Wöchentlich</MudSelectItem>
@@ -29,14 +28,19 @@
             </MudSelect>
             @if (RoutineType == "Custom")
             {
-                <MudSelect T="DayOfWeek" Label="Custom" MultiSelection="true" @bind-SelectedValues="ienum">
+                <MudSelect T="DayOfWeek" Label="Custom" MultiSelection="true" @bind-SelectedValues="ienum" Class="pa-4">
 
                         <MudSelectItem Value="DayOfWeek.Monday">Monday</MudSelectItem>
                         <MudSelectItem Value="DayOfWeek.Tuesday">Tuesday</MudSelectItem>
-
+                         <MudSelectItem Value="DayOfWeek.Wednesday">Wednesday</MudSelectItem>
+                         <MudSelectItem Value="DayOfWeek.Thursday">Thursday</MudSelectItem>
+                         <MudSelectItem Value="DayOfWeek.Friday">Friday</MudSelectItem>
+                         <MudSelectItem Value="DayOfWeek.Saturday">Saturday</MudSelectItem>
+                         <MudSelectItem Value="DayOfWeek.Sunday">Sunday</MudSelectItem>
                 </MudSelect>
             }
-        </MudForm>   
+        </MudForm>  
+    </MudPaper>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Abbrechen</MudButton>
