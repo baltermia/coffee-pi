@@ -25,28 +25,28 @@
         weekAxisLabels = sortedEnums.Select(e => nameof(e)).ToArray();
 
         // get all routines
-        IEnumerable<SingleRoutineDto> routines = await Http.GetBasicAsync<IEnumerable<SingleRoutineDto>>("api/routine");
+        IEnumerable<SingleRoutineDto> routines = await Http.GetBasicAsync<IEnumerable<SingleRoutineDto>>("routine");
 
         // get all executions for each routine type
 
         IEnumerable<ExecutedRoutineDto> singleExecutions =
             (await Task.WhenAll(
                 routines.OfType<SingleRoutineDto>().Select(
-                    async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"api/executed/from-routine/{e.Id}")
+                    async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"executed/from-routine/{e.Id}")
                 )
             )).SelectMany(e => e);
 
         IEnumerable<ExecutedRoutineDto> dailyExecutions =
             (await Task.WhenAll(
                 routines.OfType<DailyRoutineDto>().Select(
-                    async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"api/executed/from-routine/{e.Id}")
+                    async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"executed/from-routine/{e.Id}")
                 )
             )).SelectMany(e => e);
 
         IEnumerable<ExecutedRoutineDto> weeklyExecutions =
             (await Task.WhenAll(
                 routines.OfType<WeeklyRoutineDto>().Select(
-                    async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"api/executed/from-routine/{e.Id}")
+                    async e => await Http.GetBasicAsync<IEnumerable<ExecutedRoutineDto>>($"executed/from-routine/{e.Id}")
                 )
             )).SelectMany(e => e);
 

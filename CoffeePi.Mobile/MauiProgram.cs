@@ -20,7 +20,7 @@ namespace CoffeePi.Mobile
 		    builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5256/") });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://192.168.0.15:5000/api/") });
 
             builder.Services.AddMudServices();
 

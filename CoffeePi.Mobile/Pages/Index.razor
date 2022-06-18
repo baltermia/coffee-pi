@@ -1,10 +1,12 @@
 ﻿@page "/"
 
+@inject HttpClient Client
+
 <MudText Align=Align.Center Typo=Typo.h4>Neue Routine</MudText>
 
 <br />
 
-<MudGrid Spacing=4>
+<MudGrid Spacing=4 Justify=Justify.Center>
 
     <MudItem @onclick=OnBigCupClick sm=2>
         <MudPaper Height="100px" Width="100px" Style=@(selectedButton == CoffeeButton.BigCup ? "background-color: #776BE7" : "")>
@@ -23,6 +25,7 @@
             </div>
         </MudPaper>
     </MudItem>
+
 </MudGrid>
 
 <MudGrid Spacing=4 Justify=Justify.Center>
@@ -45,26 +48,103 @@
         </MudPaper>
     </MudItem>
 
-    }
     @if (selectedButton == null)
     {
         <MudText Typo=Typo.caption>Please select a Coffee-Button</MudText>
     }
+    else
+    {
+        <MudRadioGroup T=RoutineType SelectedOptionChanged=RoutineTypeChanged SelectedOption=selectedRoutineType>
+            <MudRadio Option=RoutineType.Single Color=Color.Primary>Single</MudRadio>
+            <MudRadio Option=RoutineType.Daily Color=Color.Primary>Daily</MudRadio>
+            <MudRadio Option=RoutineType.Weekly Color=Color.Primary>Weekly</MudRadio>
+        </MudRadioGroup>
+    }
+
 </MudGrid>
 
+@switch (routine)
+{
+
+    case null:
+        break;
+    case SingleRoutineDto single:
+        <CreateSingleComponent Routine=single />
+        break;
+    case DailyRoutineDto daily:
+        <CreateDailyComponent Routine=daily />
+        break;
+    case WeeklyRoutineDto wekly:
+        <CreateWeeklyComponent Routine=wekly />
+        break;
+}
+
+@if (routine != null)
+{
+    <MudStack AlignItems=AlignItems.Center Style="margin-top: 30px;">
+        <MudButton Color=Color.Primary Variant=Variant.Filled OnClick=SubmitClick Style="width: 250px;">
+            Submit
+        </MudButton>
+    </MudStack>
+}
+
 @code {
-     private CoffeeButton? selectedButton = null;
+    private CoffeeRoutineDto routine = null;
 
-    private void OnBigCupClick() =>
+    private CoffeeButton? selectedButton = null;
+    private RoutineType selectedRoutineType;
+
+    private void OnBigCupClick()
+    {
         selectedButton = CoffeeButton.BigCup;
+        RoutineTypeChanged();
+    }
 
-    private void OnSmallCupClick() =>
+    private void OnSmallCupClick()
+    {
         selectedButton = CoffeeButton.SmallCup;
+        RoutineTypeChanged();
+    }
 
-    private void OnEspressoClick() =>
+    private void OnEspressoClick()
+    {
         selectedButton = CoffeeButton.Espresso;
+        RoutineTypeChanged();
+    }
 
-    private void OnHotWaterClick() =>
+    private void OnHotWaterClick()
+    {
         selectedButton = CoffeeButton.HotWater;
+        RoutineTypeChanged();
+    }
 
+    private void RoutineTypeChanged(RoutineType type = RoutineType.Single)
+    {
+        selectedRoutineType = type;
+
+        routine = type switch
+        {
+            RoutineType.Single => new SingleRoutineDto(),
+            RoutineType.Daily => new DailyRoutineDto(),
+            RoutineType.Weekly => new WeeklyRoutineDto(),
+            _ => null
+        };
+
+        if (routine != null && selectedButton is CoffeeButton button)
+        {
+            routine.ButtonType = button;
+        }
+    }
+
+    private async void SubmitClick()
+    {
+        await Client.PostBasicAsync("routine", routine);
+    }
+
+    private enum RoutineType
+    {
+        Single,
+        Daily,
+        Weekly
+    }
 }

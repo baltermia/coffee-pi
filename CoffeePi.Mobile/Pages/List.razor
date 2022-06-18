@@ -7,7 +7,7 @@
 @code {
     protected async override Task OnInitializedAsync()
     {
-        IEnumerable<CoffeeRoutineDto> routines = await Client.GetBasicAsync<IEnumerable<CoffeeRoutineDto>>("api/routine");
+        IEnumerable<CoffeeRoutineDto> routines = await Client.GetBasicAsync<IEnumerable<CoffeeRoutineDto>>("routine");
 
         await base.OnInitializedAsync();
     }
