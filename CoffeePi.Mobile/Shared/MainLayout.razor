@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider Theme=theme @bind-bind-IsDarkMode=darkmode />
+<MudThemeProvider Theme=theme @bind-IsDarkMode=darkmode />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -22,11 +22,14 @@
             <MudIconButton Icon=@Icons.Filled.QueryStats Color=Color.Primary />
         </MudNavLink>
 
-        <MudToggleIconButton @bind-Toggled=darkmode
-                             Title="Dark"
-                             Icon=@Icons.Material.Outlined.DarkMode
-                             ToggledTitle="Light"
-                             ToggledIcon=@Icons.Material.Outlined.LightMode />
+        <MudNavLink>
+            <MudToggleIconButton @bind-Toggled=darkmode
+                                 Title="Dark"
+                                 Icon=@Icons.Material.Outlined.LightMode
+                                 ToggledTitle="Light"
+                                 ToggledIcon=@Icons.Material.Outlined.DarkMode />
+        </MudNavLink>
+        
     </MudAppBar>
 </MudLayout>
 

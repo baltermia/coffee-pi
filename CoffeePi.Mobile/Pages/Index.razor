@@ -1,48 +1,70 @@
 ﻿@page "/"
 
-<MudText Align=Align.Center Typo=Typo.h2>Neue Routine</MudText>
+<MudText Align=Align.Center Typo=Typo.h4>Neue Routine</MudText>
 
-<MudGrid Spacing=4 Justify=Justify.Center>
-    <MudItem>
-        <MudPaper Height="100px" Width="100px">
-            <MudIconButton Title="Big Cup" Icon="fa-solid fa-mug-hot" OnClick=OnBigCupClick />
+<br />
+
+<MudGrid Spacing=4>
+
+    <MudItem @onclick=OnBigCupClick sm=2>
+        <MudPaper Height="100px" Width="100px" Style=@(selectedButton == CoffeeButton.BigCup ? "background-color: #776BE7" : "")>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                <MudIcon Icon="fas fa-mug-hot" Style="margin-bottom: 5px; font-size: 30px;" />
+                <MudText>Big Cup</MudText>
+            </div>
         </MudPaper>
     </MudItem>
-    <MudItem>
-        <MudPaper Height="100px" Width="100px">
-            <MudIconButton Title="Small Cup" Icon="fa-solid fa-mug-hot" OnClick=OnSmallCupClick />
-        </MudPaper>
-    </MudItem>
-    <MudItem>
-        <MudPaper Height="100px" Width="100px">
-            <MudIconButton Title="Espresso" Icon="fa-solid fa-mug-hot" OnClick=OnEspressoClick />
-        </MudPaper>
-    </MudItem>
-    <MudItem>
-        <MudPaper Height="100px" Width="100px">
-            <MudIconButton Title="Hot Water" Icon="fa-solid fa-droplet-degree" OnClick=OnHotWaterClick />
+
+    <MudItem @onclick=OnSmallCupClick sm=2>
+        <MudPaper Height="100px" Width="100px" Style=@(selectedButton == CoffeeButton.SmallCup ? "background-color: #776BE7" : "")>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                <MudIcon Icon="fas fa-mug-hot" Style="margin-bottom: 5px;" />
+                <MudText>Small Cup</MudText>
+            </div>
         </MudPaper>
     </MudItem>
 </MudGrid>
 
+<MudGrid Spacing=4 Justify=Justify.Center>
+
+    <MudItem @onclick=OnEspressoClick sm=2>
+        <MudPaper Height="100px" Width="100px" Style=@(selectedButton == CoffeeButton.Espresso ? "background-color: #776BE7" : "")>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                <MudIcon Icon=@Icons.Outlined.Coffee Style="margin-bottom: 5px;" />
+                <MudText>Espresso</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem @onclick=OnHotWaterClick sm=2>
+        <MudPaper Height="100px" Width="100px" Style=@(selectedButton == CoffeeButton.HotWater ? "background-color: #776BE7" : "")>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                <MudIcon Icon=@Icons.Filled.WaterDrop Style="margin-bottom: 5px; font-size: 30px;" />
+                <MudText>Hot Water</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+
+    }
+    @if (selectedButton == null)
+    {
+        <MudText Typo=Typo.caption>Please select a Coffee-Button</MudText>
+    }
+</MudGrid>
+
 @code {
-    private void OnBigCupClick()
-    {
+     private CoffeeButton selectedButton = null;
 
-    }
+    private void OnBigCupClick() =>
+        selectedButton = CoffeeButton.BigCup;
 
-    private void OnSmallCupClick()
-    {
+    private void OnSmallCupClick() =>
+        selectedButton = CoffeeButton.SmallCup;
 
-    }
+    private void OnEspressoClick() =>
+        selectedButton = CoffeeButton.Espresso;
 
-    private void OnEspressoClick()
-    {
+    private void OnHotWaterClick() =>
+        selectedButton = CoffeeButton.HotWater;
 
-    }
-
-    private void OnHotWaterClick()
-    {
-
-    }
 }

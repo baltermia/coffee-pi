@@ -1,7 +1,14 @@
 ﻿@page "/List"
 
+@inject HttpClient Client
+
 <h3>List</h3>
 
 @code {
+    protected async override Task OnInitializedAsync()
+    {
+        IEnumerable<CoffeeRoutineDto> routines = await Client.GetBasicAsync<IEnumerable<CoffeeRoutineDto>>("api/routine");
 
+        await base.OnInitializedAsync();
+    }
 }
