@@ -38,6 +38,8 @@ public class DailyRoutineRepository : IDailyRoutineRepository
     {
         DailyRoutine routine = dto.ToModel();
 
+        routine.Enabled = true;
+
         await _context.AddAsync<CoffeeRoutine>(routine);
 
         await _context.SaveChangesAsync();

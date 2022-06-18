@@ -38,6 +38,8 @@ public class SingleRoutineRepository : ISingleRoutineRepository
     {
         SingleRoutine routine = dto.ToModel();
 
+        routine.Enabled = true;
+
         await _context.AddAsync<CoffeeRoutine>(routine);
 
         await _context.SaveChangesAsync();
