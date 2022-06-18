@@ -11,7 +11,7 @@
         Now
     </MudButton>
 
-    <MudSelect T=DayOfWeek @bind-bind-SelectedValues=Routine.DaysOfWeek Style="margin-top: 20px;" MultiSelection Label="Choose Days of Week" Required>
+    <MudSelect T=DayOfWeek SelectedValues=Routine.DaysOfWeek SelectedValuesChanged=ValuesChanged Style="margin-top: 20px;" MultiSelection Label="Choose Days of Week" Required>
         @foreach (DayOfWeek day in Enum.GetValues<DayOfWeek>())
         {
             <MudSelectItem Value=day />
@@ -44,4 +44,7 @@
 
     private void NowClick() =>
         Routine.TimeOfDay = TimeOnly.FromTimeSpan(DateTime.Now.TimeOfDay);
+
+    private void ValuesChanged(IEnumerable<DayOfWeek> days) =>
+        Routine.DaysOfWeek = days.ToList();
 }
