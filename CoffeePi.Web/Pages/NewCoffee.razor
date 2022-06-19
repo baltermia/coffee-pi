@@ -11,8 +11,9 @@
 <h1>New Coffee</h1>
 
 <MudButton Variant="Variant.Filled" @onclick="NewRoutine"> New Routine </MudButton>
-
-    <MudTable Items="@dailyRoutines" Loading="@_loading"  >
+@if (dailyRoutines.Any())
+{
+<MudTable Items="@dailyRoutines" Loading="@_loading"  >
         <ToolBarContent>
             <MudText Typo="Typo.h6">Daily Routines</MudText>
         </ToolBarContent>
@@ -39,7 +40,10 @@
             <MudTd><MudButton @onclick="@(() => DisableRoutine(context.Id))">Disable</MudButton></MudTd>
         </RowTemplate>
     </MudTable>
+}
 
+@if (weeklyRoutines.Any())
+{
 <MudTable Items="@weeklyRoutines" Loading="@_loading" >
     <ToolBarContent>
         <MudText Typo="Typo.h6">Weekly Routines</MudText>
@@ -59,7 +63,10 @@
         <MudTd><MudButton @onclick="@(() => DisableRoutine(context.Id))">Disable</MudButton></MudTd>
     </RowTemplate>
 </MudTable>
+}
 
+@if (singleRoutines.Any())
+{
 <MudTable Items="@singleRoutines" Loading="@_loading" >
     <ToolBarContent>
         <MudText Typo="Typo.h6">Single Routines</MudText>
@@ -76,7 +83,9 @@
         <MudTd>@context.Time</MudTd>
         <MudTd><MudButton @onclick="@(() => DisableRoutine(context.Id))">Disable</MudButton></MudTd>
     </RowTemplate>
-</MudTable>
+</MudTable>    
+}
+
 
 
 

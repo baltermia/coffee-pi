@@ -10,7 +10,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/") });
 //if (builder.HostEnvironment.IsDevelopment())
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5256/api/") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://coffeepi/api/") });
 
 builder.Services.AddMudServices();
 
