@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace CoffeePi.Simulation
 {
@@ -18,6 +20,11 @@ namespace CoffeePi.Simulation
 
         private readonly string IP = "127.0.0.1";
         private readonly int Port = 1302;
+
+        private readonly int delay = 7000;
+
+        private static readonly Brush Red = new SolidColorBrush(Colors.Red);
+        private static readonly Brush Green = new SolidColorBrush(Colors.Green);
 
         public MainWindow()
         {
@@ -48,9 +55,38 @@ namespace CoffeePi.Simulation
             }
         }
 
-        private void HandleSimulation(CoffeeButton button)
+        private async void HandleSimulation(CoffeeButton button)
         {
-            tbkResult.Text += $"New Result: {button}\n"; 
+            while (AnyButtonsRunning())
+            {
+                await Task.Delay(200);
+            }
+
+            Ellipse circle = button switch
+            {
+                CoffeeButton.Espresso => crlEspresso,
+                CoffeeButton.SmallCup => crlCoffeeSmall,
+                CoffeeButton.BigCup => crlCoffeeBig,
+                CoffeeButton.HotWater => crlWarmWater,
+                _ => default
+            };
+
+            if (circle == default)
+            {
+                return;
+            }
+
+            circle.Fill = Green;
+
+            await Task.Delay(delay);
+
+            circle.Fill = Red;
         }
+
+        private bool AnyButtonsRunning() =>
+            crlEspresso.Fill == Green ||
+            crlCoffeeSmall.Fill == Green ||
+            crlCoffeeBig.Fill == Green ||
+            crlWarmWater.Fill == Green;
     }
 }

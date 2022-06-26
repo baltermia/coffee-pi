@@ -3,10 +3,63 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CoffeePi.Simulation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="MainWindow" Height="450" Width="600" Loaded="Window_Loaded">
     <Grid>
-        <TextBlock x:Name="tbkResult" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Image Source="/Resource/delizio.jpg" Height="300" />
+        </Grid>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+
+            <Grid Width="150" Margin="0 30 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock FontSize="26"
+                               HorizontalAlignment="Right"
+                               FontWeight="Bold">
+                        Status
+                    </TextBlock>
+                    <TextBlock Margin="0 30 0 0" FontSize="18" HorizontalAlignment="Right">Espresso</TextBlock>
+                    <TextBlock FontSize="18" HorizontalAlignment="Right">Kaffee Gross</TextBlock>
+                    <TextBlock FontSize="18" HorizontalAlignment="Right">Kaffee Klein</TextBlock>
+                    <TextBlock FontSize="18" HorizontalAlignment="Right">Warm Wasser</TextBlock>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <Ellipse Fill="Red"
+                             Width="15"
+                             Height="15" 
+                             Margin="0 70 0 5"
+                             Name="crlEspresso" />
+
+                    <Ellipse Fill="Red"
+                             Width="15"
+                             Height="15" 
+                             Margin="0 5 0 5"
+                             Name="crlCoffeeBig" />
+
+                    <Ellipse Fill="Red"
+                             Width="15"
+                             Height="15" 
+                             Margin="0 5 0 4"
+                             Name="crlCoffeeSmall" />
+
+                    <Ellipse Fill="Red"
+                             Width="15"
+                             Height="15" 
+                             Margin="0 5 0 4"
+                             Name="crlWarmWater" />
+                </StackPanel>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>
