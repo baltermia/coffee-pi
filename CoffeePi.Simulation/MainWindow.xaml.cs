@@ -1,4 +1,6 @@
 ﻿using CoffeePi.Shared.Enums;
+using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
@@ -15,6 +17,8 @@ namespace CoffeePi.Simulation
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly string logPath = "Runs.log";
+
         private readonly CancellationTokenSource source;
         private CancellationToken Token => source.Token;
 
@@ -51,7 +55,9 @@ namespace CoffeePi.Simulation
 
                 CoffeeButton button = await JsonSerializer.DeserializeAsync<CoffeeButton>(recieverStream, cancellationToken: Token);
 
-                HandleSimulation(button);                
+                HandleSimulation(button);
+
+                await File.AppendAllTextAsync(logPath, $"{DateTime.Now}: {button}\n");
             }
         }
 
