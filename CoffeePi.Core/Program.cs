@@ -8,9 +8,11 @@ using CoffeePi.Shared.Converters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+Console.WriteLine(Environment.GetEnvironmentVariable("CLIENT"));
+
 // Custom Services
 builder.Services.AddScoped<IGpioService, GpioService>();
-builder.Services.AddScoped<ISimulationService, SimulationService>(_ => new SimulationService("192.168.213.255", 1302));
+builder.Services.AddScoped<ISimulationService, SimulationService>(_ => new SimulationService("192.168.213.180", 1302));
 
 // Repositories
 builder.Services.AddScoped<ICoffeeRoutineRepository, CoffeeRoutineRepository>();
