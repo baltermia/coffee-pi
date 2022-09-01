@@ -8,7 +8,7 @@ using CoffeePi.Shared.Converters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-Console.WriteLine(Environment.GetEnvironmentVariable("CLIENT"));
+Console.WriteLine( "ip=" + Environment.GetEnvironmentVariable("CLIENT"));
 
 // Custom Services
 builder.Services.AddScoped<IGpioService, GpioService>();
