@@ -10,7 +10,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Custom Services
 builder.Services.AddScoped<IGpioService, GpioService>();
-builder.Services.AddScoped<ISimulationService, SimulationService>(_ => new SimulationService("127.0.0.1", 1302));
+builder.Services.AddScoped<ISimulationService, SimulationService>(_ => new SimulationService("192.168.213.180", 1302));
 
 // Repositories
 builder.Services.AddScoped<ICoffeeRoutineRepository, CoffeeRoutineRepository>();
