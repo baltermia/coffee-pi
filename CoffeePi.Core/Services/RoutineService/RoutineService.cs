@@ -7,13 +7,11 @@ namespace CoffeePi.Core.Services;
 public class RoutineService : IRoutineService
 {
     private readonly CoffeePiContext _context;
-    private readonly IGpioService _gpio;
     private readonly ISimulationService _simulation;
 
-    public RoutineService(CoffeePiContext context, IGpioService gpio, ISimulationService simulation)
+    public RoutineService(CoffeePiContext context, ISimulationService simulation)
     {
         _context = context;
-        _gpio = gpio;
         _simulation = simulation;
     }
 
@@ -52,8 +50,6 @@ public class RoutineService : IRoutineService
         try
         {
             await _simulation.SendButtonPress(routine.ButtonType, token: token);
-
-            // await _gpio.SimulatePressAsync(routine.ButtonType, token: token);
         }
         catch
         {
