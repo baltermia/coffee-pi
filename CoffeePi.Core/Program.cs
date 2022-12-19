@@ -8,7 +8,6 @@ using CoffeePi.Shared.Converters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-// Custom Services
 builder.Services.AddScoped<ISimulationService, SimulationService>(_ => new SimulationService("127.0.0.1", 1302));
 
 // Repositories

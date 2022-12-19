@@ -22,7 +22,7 @@ namespace CoffeePi.Simulation
         private readonly CancellationTokenSource source;
         private CancellationToken Token => source.Token;
 
-        private readonly string IP = "127.0.0.1";
+        private readonly string IP = "192.168.213.27";
         private readonly int Port = 1302;
 
         private readonly int delay = 7000;
@@ -44,7 +44,7 @@ namespace CoffeePi.Simulation
 
         private async Task ListenAsync()
         {
-            TcpListener listener = new(IPAddress.Parse(IP), Port);
+            TcpListener listener = new(IPAddress.Any, Port);
 
             listener.Start();
             
