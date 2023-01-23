@@ -37,7 +37,7 @@ public class MachinePropertiesRepository : IMachinePropertiesRepository
         ApplyChanges(props => props.BeanStatus = MachineProperties.FullBeanStatus);
 
     public Task RefillWaterAsync() =>
-        ApplyChanges(props => props.WaterLevel = MachineProperties.FullWaterStatus);
+        ApplyChanges(props => props.WaterLevel = MachineProperties.FullWaterLevel);
 
     private Task ApplyChanges(Action<MachineProperties> changeAction)
     {
