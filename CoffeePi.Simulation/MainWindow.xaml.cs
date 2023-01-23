@@ -1,12 +1,16 @@
-﻿using CoffeePi.Shared.Enums;
+﻿using CoffeePi.Shared.DataTransferObjects;
+using CoffeePi.Shared.Enums;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Net.Sockets;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -30,15 +34,29 @@ namespace CoffeePi.Simulation
         private static readonly Brush Red = new SolidColorBrush(Colors.Red);
         private static readonly Brush Green = new SolidColorBrush(Colors.Green);
 
+        private bool running = false;
+        public string RunningText => running ? "Eingeschaltet" : "Ausgeschaltet";
+
+        private readonly HttpClient client;
+
         public MainWindow()
         {
             InitializeComponent();
 
+            DataContext = this;
+
             source = new();
+
+            client = new()
+            {
+                BaseAddress = new Uri("http://localhost:5000/api/")
+            };
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            await GetSettingsFromApi();
+
             await ListenAsync();
         }
 
@@ -55,13 +73,13 @@ namespace CoffeePi.Simulation
 
                 CoffeeButton button = await JsonSerializer.DeserializeAsync<CoffeeButton>(recieverStream, cancellationToken: Token);
 
-                HandleSimulation(button);
+                await HandleSimulationAsync(button);
 
                 await File.AppendAllTextAsync(logPath, $"{DateTime.Now}: {button}\n");
             }
         }
 
-        private async void HandleSimulation(CoffeeButton button)
+        private async Task HandleSimulationAsync(CoffeeButton button)
         {
             while (AnyButtonsRunning())
             {
@@ -87,6 +105,21 @@ namespace CoffeePi.Simulation
             await Task.Delay(delay);
 
             circle.Fill = Red;
+
+            await GetSettingsFromApi();
+        }
+
+        private async Task GetSettingsFromApi()
+        {
+            MachinePropertiesDto props = await client.GetFromJsonAsync<MachinePropertiesDto>("MachineProperties");
+
+            running = props.Running;
+
+            WaterLevel.Value = (double)props.WaterLevel;
+            BeanStatus.Value = (double)props.BeanStatus;
+
+            WaterLevelValue.Text = props.WaterLevel.ToString("P0");
+            BeanStatusValue.Text = props.BeanStatus.ToString("P0");
         }
 
         private bool AnyButtonsRunning() =>
@@ -94,5 +127,29 @@ namespace CoffeePi.Simulation
             crlCoffeeSmall.Fill == Green ||
             crlCoffeeBig.Fill == Green ||
             crlWarmWater.Fill == Green;
+
+        private async void RefillBeans_Click(object sender, RoutedEventArgs e)
+        {
+            await client.PatchAsync("MachineProperties/refill-beans", null);
+
+            await GetSettingsFromApi();
+        }
+
+        private async void RefillWater_Click(object sender, RoutedEventArgs e)
+        {
+            await client.PatchAsync("MachineProperties/refill-water", null);
+
+            await GetSettingsFromApi();
+        }
+
+        private async void Test_Click(object sender, RoutedEventArgs e)
+        {
+            await client.PostAsJsonAsync("Single", new SingleRoutineDto
+            {
+                ButtonType = CoffeeButton.SmallCup,
+                Enabled = true,
+                Time = DateTime.Now
+            });
+        }
     }
 }
