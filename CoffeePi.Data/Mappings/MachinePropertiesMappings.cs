@@ -14,4 +14,19 @@ public static class MachinePropertiesMappings
                 BeanStatus = properties.BeanStatus,
                 WaterLevel = properties.WaterLevel
             };
+
+    public static async Task<MachinePropertiesDto> ToDtoAsync(this Task<MachineProperties> task)
+    {
+        MachineProperties properties = await task;
+
+        if (properties == default(MachineProperties))
+            return default;
+        
+        return new MachinePropertiesDto
+        {
+            Running = properties.Running,
+            BeanStatus = properties.BeanStatus,
+            WaterLevel = properties.WaterLevel
+        };
+    }
 }
