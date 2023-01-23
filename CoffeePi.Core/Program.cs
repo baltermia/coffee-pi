@@ -16,6 +16,7 @@ builder.Services.AddScoped<ISingleRoutineRepository, SingleRoutineRepository>();
 builder.Services.AddScoped<IDailyRoutineRepository, DailyRoutineRepository>();
 builder.Services.AddScoped<IWeeklyRoutineRepository, WeeklyRoutineRepository>();
 builder.Services.AddScoped<IExecutedRoutineRepository, ExecutedRoutineRepository>();
+builder.Services.AddScoped<IMachinePropertiesRepository, MachinePropertiesRepository>();
 
 // Routine Services
 builder.Services.AddScoped<IRoutineService, RoutineService>();
