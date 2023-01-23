@@ -3,6 +3,7 @@ using System;
 using CoffeePi.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeePi.Data.Migrations
 {
     [DbContext(typeof(CoffeePiContext))]
-    partial class CoffeePiContextModelSnapshot : ModelSnapshot
+    [Migration("20230123124604_AddMachinePropertiesTable")]
+    partial class AddMachinePropertiesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
