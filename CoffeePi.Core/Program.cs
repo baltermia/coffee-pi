@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using CoffeePi.Shared.Converters;
+using CoffeePi.Data.Models;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +55,7 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
 
 WebApplication app = builder.Build();
 
-// Migrate and create database
+// Migrate + create database and add default rows
 {
     using IServiceScope scope = app.Services.CreateScope();
 
@@ -62,6 +63,13 @@ WebApplication app = builder.Build();
 
     // Execute Migrations
     context.Database.Migrate();
+
+    // Add default row for MachineProperties Table
+    if (!context.Set<MachineProperties>().Any())
+    {
+        await context.Set<MachineProperties>().AddAsync(new MachineProperties());
+        await context.SaveChangesAsync();
+    }
 }
 
 // Configure the HTTP request pipeline.
