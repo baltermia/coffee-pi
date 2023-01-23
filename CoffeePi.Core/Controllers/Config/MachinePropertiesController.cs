@@ -12,7 +12,7 @@ public class MachinePropertiesController : Controller
 
     public MachinePropertiesController(IMachinePropertiesRepository repo) => _repo = repo;
 
-    [HttpGet("background")]
+    [HttpGet]
     public async Task<ActionResult<MachinePropertiesDto>> GetMachineProperties()
     {
         try
