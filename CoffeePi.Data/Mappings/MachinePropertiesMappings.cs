@@ -10,6 +10,7 @@ public static class MachinePropertiesMappings
             default :
             new MachinePropertiesDto
             {
+                Id = properties.Id,
                 Running = properties.Running,
                 BeanStatus = properties.BeanStatus,
                 WaterLevel = properties.WaterLevel
@@ -24,6 +25,7 @@ public static class MachinePropertiesMappings
         
         return new MachinePropertiesDto
         {
+            Id = properties.Id,
             Running = properties.Running,
             BeanStatus = properties.BeanStatus,
             WaterLevel = properties.WaterLevel

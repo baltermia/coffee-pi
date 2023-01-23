@@ -2,9 +2,10 @@
 
 namespace CoffeePi.Data.Models;
 
-[Keyless]
 public class MachineProperties
 {
+    public int Id { get; set; }
+
     public static readonly decimal FullBeanStatus = 1.0M;
 
     public static readonly decimal FullWaterStatus = 1.0M;
