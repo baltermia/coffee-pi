@@ -8,6 +8,7 @@ public class CoffeePiContext : DbContext
 {
     public DbSet<CoffeeRoutine> CoffeeRoutines { get; set; }
     public DbSet<ExecutedRoutine> ExecutedRoutines { get; set; }
+    public DbSet<MachineProperties> MachineProperties { get; set; }
 
     public CoffeePiContext(DbContextOptions<CoffeePiContext> options) : base(options) { }
 
