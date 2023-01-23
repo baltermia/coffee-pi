@@ -1,5 +1,8 @@
-﻿namespace CoffeePi.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace CoffeePi.Data.Models;
+
+[Keyless]
 public class MachineProperties
 {
     public static readonly decimal FullBeanStatus = 1.0M;
