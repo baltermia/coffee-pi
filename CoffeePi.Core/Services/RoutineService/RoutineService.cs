@@ -27,7 +27,7 @@ public class RoutineService : IRoutineService
                 .Include(e => (e as WeeklyRoutine).Executions)
                 .Where(CoffeeRoutineCheckExtensions.ShouldRoutineBeExecuted);
 
-        foreach (CoffeeRoutine routine in openRoutines)
+        foreach (CoffeeRoutine routine in openRoutines.ToList())
         {
             if (token.IsCancellationRequested)
             {
@@ -95,7 +95,6 @@ public class RoutineService : IRoutineService
         MachineProperties properties = 
             await _context
                 .Set<MachineProperties>()
-                .AsNoTracking()
                 .SingleAsync();
 
         decimal usedWater = 0;
