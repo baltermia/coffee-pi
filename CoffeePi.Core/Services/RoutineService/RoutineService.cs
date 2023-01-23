@@ -108,18 +108,18 @@ public class RoutineService : IRoutineService
                 break;
 
             case CoffeeButton.SmallCup:
-                usedWater -= 0.04M;
-                usedBeans -= 0.03M;
+                usedWater = 0.04M;
+                usedBeans = 0.03M;
                 break;
 
             case CoffeeButton.Espresso:
-                usedWater -= 0.02M;
-                usedBeans -= 0.02M;
+                usedWater = 0.02M;
+                usedBeans = 0.02M;
                 break;
 
             case CoffeeButton.BigCup:
-                usedWater -= 0.06M;
-                usedBeans -= 0.05M;
+                usedWater = 0.06M;
+                usedBeans = 0.05M;
                 break;
         }
 
