@@ -1,5 +1,7 @@
-﻿using CoffeePi.Data.Configuration;
+﻿using CoffeePi.Core.Repositories;
+using CoffeePi.Data.Configuration;
 using CoffeePi.Data.Models;
+using CoffeePi.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeePi.Core.Services;
@@ -32,13 +34,13 @@ public class RoutineService : IRoutineService
                 break;
             }
 
-            await ExecuteRoutineAsync(routine, false, token);
+            await ExecuteRoutineAsync(routine, token);
         }
 
         await _context.SaveChangesAsync(token);
     }
 
-    public async Task ExecuteRoutineAsync(CoffeeRoutine routine, bool saveDbChanges = true, CancellationToken token = default)
+    public async Task ExecuteRoutineAsync(CoffeeRoutine routine, CancellationToken token = default)
     {
         if (!routine.ShouldRoutineBeExecuted())
         {
@@ -84,10 +86,47 @@ public class RoutineService : IRoutineService
 
         _context.Update(routine);
 
-        if (saveDbChanges)
+        if (success)
+            await UpdateMachinePropertiesAsync(routine.ButtonType);
+    }
+
+    private async Task UpdateMachinePropertiesAsync(CoffeeButton type)
+    {
+        MachineProperties properties = 
+            await _context
+                .Set<MachineProperties>()
+                .AsNoTracking()
+                .SingleAsync();
+
+        decimal usedWater = 0;
+        decimal usedBeans = 0;
+
+        switch (type)
         {
-            await _context.SaveChangesAsync(token);
+            case CoffeeButton.HotWater:
+                usedWater = 0.05M;
+                break;
+
+            case CoffeeButton.SmallCup:
+                usedWater -= 0.04M;
+                usedBeans -= 0.03M;
+                break;
+
+            case CoffeeButton.Espresso:
+                usedWater -= 0.02M;
+                usedBeans -= 0.02M;
+                break;
+
+            case CoffeeButton.BigCup:
+                usedWater -= 0.06M;
+                usedBeans -= 0.05M;
+                break;
         }
+
+        properties.WaterLevel -= usedWater;
+        properties.BeanStatus -= usedBeans;
+
+        _context.Update(properties);
     }
 }
 
